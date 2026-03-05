@@ -27,6 +27,42 @@ enum LeadSource {
   AUDIT
   INTAKE
   LIBRARY_FREE_DOWNLOAD
+  OUTREACH
+}
+
+enum LeadStage {
+  NEW
+  CONTACTED
+  REPLIED
+  QUALIFIED
+  BOOKED
+  WON
+  LOST
+}
+
+enum OutreachChannel {
+  WHATSAPP
+  INSTAGRAM
+  EMAIL
+  LINKEDIN
+}
+
+enum TouchpointType {
+  INITIAL
+  FOLLOW_UP
+  REPLY
+  NOTE
+}
+
+enum TouchpointOutcome {
+  SENT
+  DELIVERED
+  OPENED
+  CLICKED
+  REPLIED
+  BOUNCED
+  FAILED
+  NO_RESPONSE
 }
 
 enum LibraryAccessTier {
@@ -212,16 +248,40 @@ model SubmissionFile {
 
 model Lead {
   id        String     @id @default(uuid())
+
+  // identity
   email     String
   whatsapp  String?
   name      String?
+  company   String?
+  role      String?
+
+  // profile URLs
+  websiteUrl   String?
+  instagramUrl String?
+  linkedinUrl  String?
+
   source    LeadSource
+  stage     LeadStage  @default(NEW)
+
+  // CRM cadence
+  nextFollowUpAt DateTime?
+  lastContactedAt DateTime?
+  lastRepliedAt   DateTime?
+
+  // lightweight tags (CSV for MVP)
+  tags      String?
+
   createdAt DateTime   @default(now())
 
   freeDownloads LibraryFreeDownload[]
+  touchpoints  Touchpoint[]
+  notes        LeadNote[]
 
   @@index([email])
   @@index([whatsapp])
+  @@index([stage, nextFollowUpAt])
+  @@index([createdAt])
 }
 
 model LibraryItem {
@@ -344,4 +404,37 @@ model ServiceToken {
   isActive  Boolean  @default(true)
   lastUsedAt DateTime?
   createdAt DateTime @default(now())
+}
+
+model Touchpoint {
+  id        String          @id @default(uuid())
+  leadId    String
+  channel   OutreachChannel
+  type      TouchpointType
+
+  // message content
+  subject   String?
+  body      String?
+
+  outcome   TouchpointOutcome?
+  sentAt    DateTime?
+
+  createdAt DateTime        @default(now())
+
+  lead      Lead            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([leadId, createdAt])
+  @@index([channel, createdAt])
+  @@index([sentAt])
+}
+
+model LeadNote {
+  id        String   @id @default(uuid())
+  leadId    String
+  body      String
+  createdAt DateTime @default(now())
+
+  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([leadId, createdAt])
 }

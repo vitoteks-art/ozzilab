@@ -78,6 +78,8 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           <div className="flex flex-col gap-1 mb-8">
             <h1 className="text-slate-400 text-[10px] uppercase font-bold tracking-wider px-3 mb-2">Main Menu</h1>
             <NavItem href="/admin/intakes" icon="move_to_inbox" label="Submissions" />
+            <NavItem href="/admin/crm/followups" icon="routine" label="CRM Follow-ups" />
+            <NavItem href="/admin/crm/leads" icon="contacts" label="CRM Leads" />
             <NavItem href="/admin/library" icon="library_books" label="Library Management" />
             <NavItem href="/admin/purchases" icon="payments" label="Payments" />
             <NavItem href="/admin/audits" icon="group" label="Audits" />
