@@ -8,12 +8,24 @@ const COOKIE_NAME = 'ozzi_admin'
 export async function ensureAdminSeeded() {
   const email = process.env.ADMIN_EMAIL
   const password = process.env.ADMIN_PASSWORD
+  const forceReset = process.env.ADMIN_FORCE_RESET === 'true'
   if (!email || !password) return
+
+  const passwordHash = await bcrypt.hash(password, 12)
+
+  if (forceReset) {
+    await prisma.adminUser.upsert({
+      where: { email },
+      create: { email, passwordHash },
+      update: { passwordHash },
+    })
+    console.log('AdminUser password reset applied for:', email)
+    return
+  }
 
   const existing = await prisma.adminUser.findUnique({ where: { email } })
   if (existing) return
 
-  const passwordHash = await bcrypt.hash(password, 12)
   await prisma.adminUser.create({ data: { email, passwordHash } })
   console.log('Seeded AdminUser:', email)
 }
