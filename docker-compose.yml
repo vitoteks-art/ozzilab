@@ -1,0 +1,21 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ozzi_web_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ozzi
+      POSTGRES_USER: ozzi
+      POSTGRES_PASSWORD: ozzi_password
+    ports:
+      - "5434:5432"
+    volumes:
+      - ozzi_web_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ozzi -d ozzi"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  ozzi_web_db_data:

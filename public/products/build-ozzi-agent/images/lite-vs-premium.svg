@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <style>
+      .bg{fill:#fbfaf8}
+      .card{fill:#ffffff;stroke:#e5e7eb;stroke-width:2}
+      .h1{font:700 56px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a}
+      .h2{font:700 40px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#0f172a}
+      .p{font:400 28px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#334155}
+      .muted{fill:#64748b}
+      .accent{fill:#8b5a2b}
+      .badge{fill:#0f172a}
+      .badgeText{font:700 22px ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial;fill:#ffffff}
+    </style>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1600" height="900"/>
+
+  <rect class="accent" x="0" y="0" width="1600" height="16"/>
+
+  <text class="h1" x="80" y="120">Lite vs Premium</text>
+  <text class="p muted" x="80" y="170">Build an Ozzi-Style Operator Agent (Project 100K)</text>
+
+  <!-- Cards -->
+  <rect class="card" x="80" y="230" rx="24" ry="24" width="700" height="560"/>
+  <rect class="card" x="820" y="230" rx="24" ry="24" width="700" height="560"/>
+
+  <!-- Lite header -->
+  <rect class="badge" x="120" y="270" rx="18" ry="18" width="120" height="44"/>
+  <text class="badgeText" x="148" y="300">LITE</text>
+  <text class="h2" x="120" y="370">Quickstart (Free)</text>
+
+  <!-- Lite bullets -->
+  <text class="p" x="120" y="430">• Operator-agent blueprint (the 7 components)</text>
+  <text class="p" x="120" y="480">• Doctrine + constraints worksheet</text>
+  <text class="p" x="120" y="530">• Minimal system prompt contract (copy/paste)</text>
+  <text class="p" x="120" y="580">• Daily operating loop (10 items)</text>
+  <text class="p" x="120" y="630">• Approval gates (what must be approved)</text>
+  <text class="p muted" x="120" y="710">Best for: getting your first reliable operator agent live.</text>
+
+  <!-- Premium header -->
+  <rect class="badge" x="860" y="270" rx="18" ry="18" width="160" height="44"/>
+  <text class="badgeText" x="888" y="300">PREMIUM</text>
+  <text class="h2" x="860" y="370">Implementation Guide</text>
+
+  <!-- Premium bullets -->
+  <text class="p" x="860" y="430">• Full build system: identity → doctrine → governance</text>
+  <text class="p" x="860" y="480">• Memory system + workflows (daily/weekly) that stick</text>
+  <text class="p" x="860" y="530">• SOP pack + templates (outbound, experiments, reports)</text>
+  <text class="p" x="860" y="580">• Troubleshooting: failure modes + fixes</text>
+  <text class="p" x="860" y="630">• Test suite: 20 scenarios + scoring rubric</text>
+  <text class="p muted" x="860" y="710">Best for: building an operator you can actually run weekly.</text>
+
+  <!-- Accent divider -->
+  <rect class="accent" x="800" y="230" width="4" height="560"/>
+</svg>

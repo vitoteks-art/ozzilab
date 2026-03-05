@@ -1,0 +1,347 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AuditStatus {
+  NEW
+  REVIEWING
+  APPROVED
+  REJECTED
+}
+
+enum IntakeStatus {
+  NEW
+  REVIEWING
+  ACCEPTED
+  IN_PROGRESS
+  DELIVERED
+  REJECTED
+}
+
+enum LeadSource {
+  AUDIT
+  INTAKE
+  LIBRARY_FREE_DOWNLOAD
+}
+
+enum LibraryAccessTier {
+  FREE
+  PREMIUM
+}
+
+enum LibraryCategory {
+  OPERATIONS
+  MARKETING
+  AUTOMATION
+  OTHER
+}
+
+enum PaymentProvider {
+  PAYSTACK
+  FLUTTERWAVE
+}
+
+enum Currency {
+  NGN
+  USD
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  ABANDONED
+}
+
+enum EntitlementType {
+  LIBRARY_ITEM
+}
+
+enum ProjectStatus {
+  NEW
+  ACTIVE
+  BLOCKED
+  COMPLETED
+  ARCHIVED
+}
+
+enum ActorType {
+  ADMIN
+  OZZI
+  CLIENT
+  SYSTEM
+}
+
+enum EntityType {
+  PROJECT
+  AUDIT_REQUEST
+  INTAKE_SUBMISSION
+  LEAD
+  LIBRARY_ITEM
+  PURCHASE
+}
+
+model AdminUser {
+  id           String         @id @default(uuid())
+  email        String         @unique
+  passwordHash String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  sessions     AdminSession[]
+}
+
+model AdminSession {
+  id               String    @id @default(uuid())
+  adminUserId      String
+  sessionTokenHash String    @unique
+  expiresAt        DateTime
+  createdAt        DateTime  @default(now())
+
+  adminUser AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
+
+  @@index([adminUserId])
+  @@index([expiresAt])
+}
+
+model AuditRequest {
+  id                    String      @id @default(uuid())
+  auditId               String      @unique
+  fullName              String
+  email                 String
+  businessName          String
+  websiteUrl            String?
+  instagramUrl          String?
+  youtubeUrl            String?
+  offerType             String?
+  pricePointRange       String?
+  monthlyLeadVolumeRange String?
+  primaryGoal           String?
+  biggestConstraint     String?
+
+  status        AuditStatus @default(NEW)
+  internalNotes String?
+  reviewedAt    DateTime?
+  approvedAt    DateTime?
+  rejectedAt    DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  inviteTokens IntakeInviteToken[]
+  intakes      IntakeSubmission[]
+  projects     Project[]
+
+  @@index([status, createdAt])
+}
+
+model IntakeInviteToken {
+  id              String   @id @default(uuid())
+  auditRequestId  String
+  tokenHash       String   @unique
+  expiresAt       DateTime
+  usedAt          DateTime?
+  deliveryEmail   String?
+  deliveryWhatsApp String?
+  createdAt       DateTime @default(now())
+
+  auditRequest AuditRequest @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
+
+  @@index([auditRequestId])
+  @@index([expiresAt])
+}
+
+model IntakeSubmission {
+  id             String @id @default(uuid())
+  submissionId   String @unique
+  auditRequestId String
+
+  businessName String
+  websiteUrl   String?
+  contactEmail String
+  industry     String?
+
+  kpiTarget         String?
+  successDefinition String?
+
+  funnelSummary String?
+  toolsStack    String?
+  constraints   String?
+
+  requestedBuild   String?
+  mustHaveFeatures String?
+  nonGoals         String?
+
+  timeline    String?
+  budgetRange String?
+
+  supportingLinks String? // newline or JSON string
+
+  status        IntakeStatus @default(NEW)
+  internalNotes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  auditRequest AuditRequest @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
+  files        SubmissionFile[]
+  projects     Project[]
+
+  @@index([status, createdAt])
+  @@index([auditRequestId])
+}
+
+model SubmissionFile {
+  id                String   @id @default(uuid())
+  intakeSubmissionId String
+  originalName      String
+  storedPath        String
+  mimeType          String
+  sizeBytes         BigInt
+  checksum          String?
+  createdAt         DateTime @default(now())
+
+  intakeSubmission IntakeSubmission @relation(fields: [intakeSubmissionId], references: [id], onDelete: Cascade)
+
+  @@index([intakeSubmissionId])
+}
+
+model Lead {
+  id        String     @id @default(uuid())
+  email     String
+  whatsapp  String?
+  name      String?
+  source    LeadSource
+  createdAt DateTime   @default(now())
+
+  freeDownloads LibraryFreeDownload[]
+
+  @@index([email])
+  @@index([whatsapp])
+}
+
+model LibraryItem {
+  id               String           @id @default(uuid())
+  slug             String           @unique
+  title            String
+  summary          String?
+  contentMarkdown  String?
+  tier             LibraryAccessTier
+  category         LibraryCategory  @default(OTHER)
+  priceNGN         Int?
+  priceUSD         Int?
+  downloadFilePath String?
+  isPublished      Boolean          @default(false)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+
+  freeDownloads LibraryFreeDownload[]
+  purchases      Purchase[]
+  entitlements   Entitlement[]
+}
+
+model LibraryFreeDownload {
+  id           String   @id @default(uuid())
+  libraryItemId String
+  leadId       String
+  createdAt    DateTime @default(now())
+
+  libraryItem LibraryItem @relation(fields: [libraryItemId], references: [id], onDelete: Cascade)
+  lead        Lead        @relation(fields: [leadId], references: [id], onDelete: Cascade)
+
+  @@index([libraryItemId])
+  @@index([leadId])
+}
+
+model Purchase {
+  id                   String          @id @default(uuid())
+  provider             PaymentProvider
+  providerReference    String          @unique
+  providerTransactionId String?
+  email                String
+  libraryItemId        String
+  amount               Int
+  currency             Currency
+  status               PaymentStatus
+  rawWebhookEvent      Json?
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+
+  libraryItem LibraryItem @relation(fields: [libraryItemId], references: [id], onDelete: Restrict)
+  entitlements Entitlement[]
+
+  @@index([email])
+  @@index([status, createdAt])
+}
+
+model Entitlement {
+  id            String          @id @default(uuid())
+  email         String
+  type          EntitlementType
+  libraryItemId String
+  purchaseId    String?
+  startsAt      DateTime        @default(now())
+  endsAt        DateTime?
+  createdAt     DateTime        @default(now())
+
+  libraryItem LibraryItem @relation(fields: [libraryItemId], references: [id], onDelete: Restrict)
+  purchase    Purchase?  @relation(fields: [purchaseId], references: [id], onDelete: SetNull)
+
+  @@index([email, libraryItemId])
+}
+
+model Project {
+  id                String        @id @default(uuid())
+  code              String        @unique
+  name              String
+  description       String?
+  status            ProjectStatus @default(NEW)
+
+  auditRequestId    String?
+  intakeSubmissionId String?
+
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  auditRequest      AuditRequest?     @relation(fields: [auditRequestId], references: [id], onDelete: SetNull)
+  intakeSubmission  IntakeSubmission? @relation(fields: [intakeSubmissionId], references: [id], onDelete: SetNull)
+
+  events            ActivityEvent[]
+
+  @@index([status, createdAt])
+}
+
+model ActivityEvent {
+  id         String    @id @default(uuid())
+  type       String
+  actorType  ActorType
+  actorId    String?
+
+  entityType EntityType
+  entityId   String
+
+  projectId  String?
+  payload    Json?
+  createdAt  DateTime  @default(now())
+
+  project    Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@index([createdAt])
+  @@index([type, createdAt])
+  @@index([entityType, entityId])
+  @@index([projectId, createdAt])
+}
+
+model ServiceToken {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  tokenHash String   @unique
+  scopes    String
+  isActive  Boolean  @default(true)
+  lastUsedAt DateTime?
+  createdAt DateTime @default(now())
+}
