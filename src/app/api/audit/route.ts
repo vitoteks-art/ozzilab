@@ -8,17 +8,40 @@ import { rateLimit } from '@/lib/rateLimit'
 import { ActorType, EntityType } from '@prisma/client'
 
 const schema = z.object({
+  // identity
   fullName: z.string().min(2),
   email: z.string().email(),
+  whatsapp: z.string().optional().or(z.literal('')),
+  country: z.string().optional().or(z.literal('')),
+
   businessName: z.string().min(2),
   websiteUrl: z.string().url().optional().or(z.literal('')),
   instagramUrl: z.string().url().optional().or(z.literal('')),
   youtubeUrl: z.string().url().optional().or(z.literal('')),
+  linkedinUrl: z.string().url().optional().or(z.literal('')),
+
+  // decision maker (mandatory)
+  decisionMakerStatus: z.enum(['YES', 'NO', 'SHARED']),
+  decisionMakerName: z.string().optional().or(z.literal('')),
+  decisionMakerRole: z.string().optional().or(z.literal('')),
+  decisionMakerEmail: z.string().email().optional().or(z.literal('')),
+  decisionMakerWhatsApp: z.string().optional().or(z.literal('')),
+
+  // business context
+  industry: z.string().optional().or(z.literal('')),
   offerType: z.string().optional().or(z.literal('')),
+  offerSummary: z.string().optional().or(z.literal('')),
+
+  // performance/funnel
   pricePointRange: z.string().optional().or(z.literal('')),
   monthlyLeadVolumeRange: z.string().optional().or(z.literal('')),
+  primaryAcquisitionChannel: z.string().optional().or(z.literal('')),
+  schedulerUrl: z.string().url().optional().or(z.literal('')),
+
   primaryGoal: z.string().optional().or(z.literal('')),
   biggestConstraint: z.string().optional().or(z.literal('')),
+  toolsStack: z.string().optional().or(z.literal('')),
+
   // honeypot
   company: z.string().optional().or(z.literal('')),
 })
@@ -42,17 +65,36 @@ export async function POST(req: Request) {
     const created = await prisma.auditRequest.create({
       data: {
         auditId,
+
         fullName: data.fullName,
         email: data.email,
+        whatsapp: data.whatsapp || null,
+        country: data.country || null,
+
         businessName: data.businessName,
         websiteUrl: data.websiteUrl || null,
         instagramUrl: data.instagramUrl || null,
         youtubeUrl: data.youtubeUrl || null,
+        linkedinUrl: data.linkedinUrl || null,
+
+        decisionMakerStatus: data.decisionMakerStatus,
+        decisionMakerName: data.decisionMakerName || null,
+        decisionMakerRole: data.decisionMakerRole || null,
+        decisionMakerEmail: data.decisionMakerEmail || null,
+        decisionMakerWhatsApp: data.decisionMakerWhatsApp || null,
+
+        industry: data.industry || null,
         offerType: data.offerType || null,
+        offerSummary: data.offerSummary || null,
+
         pricePointRange: data.pricePointRange || null,
         monthlyLeadVolumeRange: data.monthlyLeadVolumeRange || null,
+        primaryAcquisitionChannel: data.primaryAcquisitionChannel || null,
+        schedulerUrl: data.schedulerUrl || null,
+
         primaryGoal: data.primaryGoal || null,
         biggestConstraint: data.biggestConstraint || null,
+        toolsStack: data.toolsStack || null,
       },
     })
 

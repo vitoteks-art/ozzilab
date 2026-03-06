@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { DecisionMakerFields } from './DecisionMakerFields'
 
 export default function AuditPage() {
   const router = useRouter()
@@ -81,6 +82,34 @@ export default function AuditPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="whatsapp">
+                      WhatsApp Number
+                    </label>
+                    <input
+                      id="whatsapp"
+                      name="whatsapp"
+                      type="text"
+                      placeholder="+234…"
+                      className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="country">
+                      Country
+                    </label>
+                    <input
+                      id="country"
+                      name="country"
+                      type="text"
+                      placeholder="e.g. Nigeria, UK, US"
+                      className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="businessName">
                       Business Name
                     </label>
@@ -96,23 +125,77 @@ export default function AuditPage() {
 
                   <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold text-slate-700 ml-1 flex justify-between" htmlFor="websiteUrl">
-                      Website or Social Link
-                      <span className="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded-full uppercase">Required</span>
+                      Website URL
+                      <span className="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded-full uppercase">One link required</span>
                     </label>
                     <input
                       id="websiteUrl"
                       name="websiteUrl"
-                      required
                       type="url"
                       placeholder="https://…"
                       className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
                     />
-                    {/* Optional: extra links (kept hidden visually; backend accepts them). */}
-                    <input tabIndex={-1} autoComplete="off" name="instagramUrl" className="hidden" />
-                    <input tabIndex={-1} autoComplete="off" name="youtubeUrl" className="hidden" />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="instagramUrl">
+                      Instagram Profile URL
+                    </label>
+                    <input
+                      id="instagramUrl"
+                      name="instagramUrl"
+                      type="url"
+                      placeholder="https://instagram.com/..."
+                      className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="linkedinUrl">
+                      LinkedIn Profile URL
+                    </label>
+                    <input
+                      id="linkedinUrl"
+                      name="linkedinUrl"
+                      type="url"
+                      placeholder="https://linkedin.com/in/..."
+                      className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="youtubeUrl">
+                      YouTube Channel URL
+                    </label>
+                    <input
+                      id="youtubeUrl"
+                      name="youtubeUrl"
+                      type="url"
+                      placeholder="https://youtube.com/..."
+                      className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="schedulerUrl">
+                      Booking / Scheduler URL
+                    </label>
+                    <input
+                      id="schedulerUrl"
+                      name="schedulerUrl"
+                      type="url"
+                      placeholder="https://calendly.com/..."
+                      className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
+                    />
                   </div>
                 </div>
               </section>
+
+              <DecisionMakerFields />
 
               {/* Performance Metrics */}
               <section className="space-y-6">

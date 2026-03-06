@@ -14,6 +14,12 @@ enum AuditStatus {
   REJECTED
 }
 
+enum DecisionMakerStatus {
+  YES
+  NO
+  SHARED
+}
+
 enum IntakeStatus {
   NEW
   REVIEWING
@@ -147,17 +153,40 @@ model AdminSession {
 model AuditRequest {
   id                    String      @id @default(uuid())
   auditId               String      @unique
+
+  // identity
   fullName              String
   email                 String
+  whatsapp              String?
+  country               String?
+
   businessName          String
   websiteUrl            String?
   instagramUrl          String?
   youtubeUrl            String?
+  linkedinUrl           String?
+
+  // decision maker
+  decisionMakerStatus   DecisionMakerStatus
+  decisionMakerName     String?
+  decisionMakerRole     String?
+  decisionMakerEmail    String?
+  decisionMakerWhatsApp String?
+
+  // business context
+  industry              String?
   offerType             String?
+  offerSummary          String?
+
+  // performance/funnel
   pricePointRange       String?
   monthlyLeadVolumeRange String?
+  primaryAcquisitionChannel String?
+  schedulerUrl          String?
+
   primaryGoal           String?
   biggestConstraint     String?
+  toolsStack            String?
 
   status        AuditStatus @default(NEW)
   internalNotes String?
