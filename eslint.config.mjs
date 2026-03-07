@@ -18,6 +18,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Workspace scripts (not part of Next.js runtime)
+    "scripts/**",
   ]),
 ]);
 
