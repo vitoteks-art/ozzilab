@@ -46,7 +46,9 @@ export default async function CRMLeadsPage() {
               {leads.map((l) => (
                 <tr key={l.id} className="border-t border-slate-100 hover:bg-slate-50">
                   <td className="px-4 py-3">
-                    <div className="font-semibold text-slate-900">{l.name || l.email}</div>
+                    <Link href={`/admin/crm/leads/${l.id}`} className="font-semibold text-slate-900 hover:text-primary">
+                      {l.name || l.email}
+                    </Link>
                     <div className="text-xs text-slate-500">{l.email}</div>
                   </td>
                   <td className="px-4 py-3 text-slate-700">{l.company || '-'}</td>
