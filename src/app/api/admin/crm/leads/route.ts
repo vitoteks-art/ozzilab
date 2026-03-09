@@ -5,17 +5,22 @@ import { requireAdmin } from '@/lib/adminAuth'
 
 export const dynamic = 'force-dynamic'
 
-const createSchema = z.object({
-  email: z.string().email(),
-  name: z.string().optional().or(z.literal('')),
-  whatsapp: z.string().optional().or(z.literal('')),
-  company: z.string().optional().or(z.literal('')),
-  role: z.string().optional().or(z.literal('')),
-  websiteUrl: z.string().url().optional().or(z.literal('')),
-  instagramUrl: z.string().url().optional().or(z.literal('')),
-  linkedinUrl: z.string().url().optional().or(z.literal('')),
-  tags: z.string().optional().or(z.literal('')),
-})
+const createSchema = z
+  .object({
+    email: z.string().email().optional().or(z.literal('')),
+    name: z.string().optional().or(z.literal('')),
+    whatsapp: z.string().optional().or(z.literal('')),
+    company: z.string().optional().or(z.literal('')),
+    role: z.string().optional().or(z.literal('')),
+    websiteUrl: z.string().url().optional().or(z.literal('')),
+    instagramUrl: z.string().url().optional().or(z.literal('')),
+    linkedinUrl: z.string().url().optional().or(z.literal('')),
+    tags: z.string().optional().or(z.literal('')),
+  })
+  .refine(
+    (d) => Boolean((d.email || '').trim() || (d.whatsapp || '').trim() || (d.instagramUrl || '').trim() || (d.linkedinUrl || '').trim()),
+    { message: 'Provide at least one contact method (email, WhatsApp, Instagram, or LinkedIn).' }
+  )
 
 export async function GET() {
   try {
@@ -38,7 +43,7 @@ export async function POST(req: Request) {
 
     const created = await prisma.lead.create({
       data: {
-        email: data.email,
+        email: (data.email || '').trim() || null,
         name: data.name || null,
         whatsapp: data.whatsapp || null,
         company: data.company || null,

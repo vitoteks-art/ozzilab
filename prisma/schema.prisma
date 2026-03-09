@@ -279,7 +279,7 @@ model Lead {
   id        String     @id @default(uuid())
 
   // identity
-  email     String
+  email     String?
   whatsapp  String?
   name      String?
   company   String?
