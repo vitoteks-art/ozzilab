@@ -5,7 +5,7 @@ import { requireServiceToken } from '@/lib/serviceAuth'
 
 export const dynamic = 'force-dynamic'
 
-const schema = z.object({
+const postSchema = z.object({
   leadId: z.string().optional(),
   leadEmail: z.string().email().optional(),
   channel: z.enum(['WHATSAPP', 'EMAIL', 'INSTAGRAM', 'LINKEDIN']),
@@ -18,10 +18,46 @@ const schema = z.object({
   stage: z.enum(['NEW', 'CONTACTED', 'REPLIED', 'QUALIFIED', 'BOOKED', 'WON', 'LOST']).optional(),
 })
 
+const getSchema = z.object({
+  leadId: z.string().optional(),
+  type: z.enum(['INITIAL', 'FOLLOW_UP', 'REPLY', 'NOTE']).optional(),
+  limit: z.coerce.number().int().min(1).max(500).default(50),
+})
+
+export async function GET(req: Request) {
+  try {
+    await requireServiceToken(req, 'crm:write')
+    const url = new URL(req.url)
+    const q = getSchema.parse({
+      leadId: url.searchParams.get('leadId') || undefined,
+      type: url.searchParams.get('type') || undefined,
+      limit: url.searchParams.get('limit') || undefined,
+    })
+
+    if (!q.leadId) return NextResponse.json({ ok: false, error: 'leadId required' }, { status: 400 })
+
+    const where: any = { leadId: q.leadId }
+    if (q.type) where.type = q.type
+
+    const touchpoints = await prisma.touchpoint.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      take: q.limit,
+    })
+
+    return NextResponse.json({ ok: true, touchpoints })
+  } catch (e: any) {
+    console.error(e)
+    if (e?.message === 'UNAUTHORIZED') return NextResponse.json({ ok: false, error: 'Unauthorized' }, { status: 401 })
+    if (e?.message === 'FORBIDDEN') return NextResponse.json({ ok: false, error: 'Forbidden' }, { status: 403 })
+    return NextResponse.json({ ok: false, error: 'Server error' }, { status: 500 })
+  }
+}
+
 export async function POST(req: Request) {
   try {
     await requireServiceToken(req, 'crm:write')
-    const input = schema.parse(await req.json())
+    const input = postSchema.parse(await req.json())
 
     let lead = null as null | { id: string }
 
