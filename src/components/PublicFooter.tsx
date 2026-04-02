@@ -10,7 +10,7 @@ export function PublicFooter() {
             <span className="text-lg font-bold tracking-tight uppercase">Ozzilab</span>
           </div>
           <p className="text-slate-500 max-w-sm mb-8 leading-relaxed">
-            Premium business automation for firms that prioritize efficiency and scalability.
+            Systems for content, social media execution, operations, and automation for businesses that want stronger execution.
           </p>
           <div className="flex gap-6">
             <a

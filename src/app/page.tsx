@@ -1,172 +1,334 @@
+import Image from 'next/image'
 import Link from 'next/link'
-import { PublicStats } from '@/components/PublicStats'
+
+const systemPillars = [
+  {
+    title: 'Content Production Systems',
+    desc: 'Repeatable workflows for generating content assets, campaign angles, and publishing-ready material faster.',
+  },
+  {
+    title: 'Social Media Execution',
+    desc: 'Structured systems for planning, producing, and distributing posts across the channels that matter.',
+  },
+  {
+    title: 'Qualification and Follow-Up',
+    desc: 'Automated routing, messaging, reminders, and sales touchpoints that reduce lead leakage.',
+  },
+  {
+    title: 'Operational Infrastructure',
+    desc: 'Internal workflows, notifications, approvals, and delivery logic connected into one operating layer.',
+  },
+]
+
+const frictionPoints = [
+  'Leads arrive, but response time is inconsistent.',
+  'Sales conversations start without qualification context.',
+  'Follow-up depends on manual reminders and ad hoc effort.',
+  'Appointment flow breaks between form, CRM, and messaging.',
+  'The business grows, but operations stay fragile.',
+]
+
+const outcomes = [
+  { label: 'Content production', manual: 'Ad hoc', system: 'Repeatable workflow' },
+  { label: 'Social execution', manual: 'Inconsistent', system: 'Planned and structured' },
+  { label: 'Follow-up', manual: 'Reactive', system: 'Sequenced automatically' },
+  { label: 'Operations visibility', manual: 'Scattered', system: 'Centralized view' },
+]
+
+const buildSequence = [
+  {
+    step: '01',
+    title: 'Diagnose the operating bottleneck',
+    desc: 'We audit your content, distribution, conversion, and operations flow to identify where execution is breaking.',
+  },
+  {
+    step: '02',
+    title: 'Design the operating system',
+    desc: 'We define the content workflow, channel execution model, automation logic, and implementation blueprint.',
+  },
+  {
+    step: '03',
+    title: 'Build the system stack',
+    desc: 'We connect your content workflows, social execution, CRM, messaging, and internal operations into one delivery system.',
+  },
+  {
+    step: '04',
+    title: 'Stabilize and refine',
+    desc: 'We test, optimize, and tighten the workflow so it performs under real operating conditions.',
+  },
+]
 
 export default function HomePage() {
   return (
     <main>
-      {/* Hero */}
-      <section className="relative pt-24 pb-32 px-6 lg:px-12 max-w-7xl mx-auto">
-        <div className="grid lg:grid-cols-12 gap-16 items-center">
-          <div className="lg:col-span-7">
-            <div className="inline-flex items-center gap-3 px-3 py-1 bg-slate-100 rounded-full mb-8">
-              <span className="flex size-2 rounded-full bg-primary" />
-              <span className="text-xs font-bold uppercase tracking-widest text-slate-500">Business Systems Architecture</span>
-            </div>
-            <h1 className="font-serif text-5xl lg:text-7xl leading-[1.1] text-slate-900 mb-8">
-              General Business Automation for <span className="italic text-primary">growth-focused</span> teams.
-            </h1>
-            <p className="text-xl text-slate-600 leading-relaxed mb-10 max-w-2xl">
-              We automate lead capture, qualification, follow-up, and internal workflows—so revenue doesn’t depend on manual effort.
-            </p>
-            <div className="flex flex-wrap gap-4 mb-12">
-              <Link
-                href="/audit"
-                className="bg-primary text-white px-8 py-4 rounded-lg font-bold text-base hover:shadow-xl hover:shadow-primary/20 transition-all"
-              >
-                Request Audit
-              </Link>
-              <Link
-                href="/library"
-                className="bg-white border border-border-subtle text-slate-900 px-8 py-4 rounded-lg font-bold text-base hover:bg-slate-50 transition-all"
-              >
-                Explore Library
-              </Link>
-            </div>
-            <div className="flex items-center gap-6 text-sm font-medium text-slate-400">
-              <span>Qualification</span>
-              <span className="size-1 bg-slate-300 rounded-full" />
-              <span>Follow-up</span>
-              <span className="size-1 bg-slate-300 rounded-full" />
-              <span>Pipeline Management</span>
+      <section className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(16,98,229,0.12),_transparent_32%),linear-gradient(180deg,#f8fafc_0%,#eef4ff_100%)]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 pt-24 pb-24 lg:pt-28 lg:pb-28">
+          <div className="grid lg:grid-cols-12 gap-12 items-center">
+            <div className="lg:col-span-6">
+              <div className="inline-flex items-center gap-3 rounded-full border border-primary/15 bg-white/80 px-4 py-2 mb-8 shadow-sm">
+                <span className="flex size-2 rounded-full bg-primary" />
+                <span className="text-[11px] font-bold uppercase tracking-[0.24em] text-slate-600">
+                  Revenue Systems Architecture
+                </span>
+              </div>
+
+              <h1 className="font-serif text-5xl lg:text-6xl leading-[1.04] tracking-[-0.03em] text-slate-950 max-w-3xl mb-8">
+                Systems for content, operations, and growth.
+              </h1>
+
+              <p className="text-xl text-slate-600 leading-relaxed max-w-2xl mb-10">
+                Ozzilab designs and deploys systems for content creation, social media execution, qualification, follow-up, and operations for businesses that want stronger execution without added operational drag.
+              </p>
+
+              <div className="flex flex-col sm:flex-row gap-4 mb-10">
+                <Link
+                  href="/audit"
+                  className="inline-flex items-center justify-center rounded-xl bg-primary px-8 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-primary/25"
+                >
+                  Request a System Audit
+                </Link>
+                <Link
+                  href="/library"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-8 py-4 text-base font-bold text-slate-900 transition-colors hover:bg-slate-50"
+                >
+                  Explore the Library
+                </Link>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-4 text-sm font-semibold text-slate-500">
+                <span>Content systems</span>
+                <span className="size-1 rounded-full bg-slate-300" />
+                <span>Social media execution</span>
+                <span className="size-1 rounded-full bg-slate-300" />
+                <span>Operations and automation</span>
+              </div>
             </div>
 
-            {/* Public stats */}
-            <PublicStats />
-          </div>
+            <div className="lg:col-span-6">
+              <div className="rounded-[28px] border border-slate-200 bg-white p-5 lg:p-6 shadow-[0_30px_80px_rgba(15,23,42,0.10)]">
+                <div className="rounded-[24px] bg-slate-950 p-7 lg:p-8 text-white">
+                  <div className="flex items-center justify-between mb-8">
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.24em] text-slate-400 mb-2">System view</p>
+                      <h2 className="text-2xl font-semibold">Execution architecture.</h2>
+                    </div>
+                    <div className="size-11 rounded-2xl bg-white/10 flex items-center justify-center">
+                      <span className="material-symbols-outlined text-white">deployed_code</span>
+                    </div>
+                  </div>
 
-          <div className="lg:col-span-5 relative">
-            <div className="aspect-[4/5] bg-background-surface rounded-2xl border border-border-subtle overflow-hidden shadow-2xl relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                alt="Modern minimal office"
-                className="w-full h-full object-cover grayscale-[0.5] hover:grayscale-0 transition-all duration-700"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuOD945FBQkNDRsm3N5UNyTpWsFGZd40XOuN-S53gYiti295CBkqSEyfl0aof8AsI5lFaQ5ZbMZOlyStGFDu1dUU2dZDDMQJCEh_rKMmLTjpRNiwD-81d28QXrZhU7zgKb9wzt9I5WV54PG72XNiS4DdjibX3igBOoa4Q_jB22v4ZkAfQ82dca_vgGyh4vXciANN1tKSoaC9nKBZNkhLMVHrHrVV6-LkKmZpekoalTcdgXocyKO-yi1drBR4CKLudmeWLSNxYBm0Ga"
-              />
+                  <div className="space-y-4">
+                    {[
+                      ['Content engine', 'Ideas, drafts, campaign assets'],
+                      ['Social distribution', 'Channel planning, post flow, publishing'],
+                      ['Commercial workflow', 'Qualification, follow-up, routing'],
+                      ['Operations layer', 'CRM, internal visibility, delivery logic'],
+                    ].map(([title, desc]) => (
+                      <div key={title} className="rounded-2xl border border-white/10 bg-white/5 px-4 py-4">
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <h3 className="font-semibold text-white">{title}</h3>
+                            <p className="text-sm text-slate-300 mt-1">{desc}</p>
+                          </div>
+                          <span className="material-symbols-outlined text-slate-400">east</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-6 rounded-2xl bg-primary px-5 py-4 text-white">
+                    <p className="text-xs uppercase tracking-[0.24em] text-white/70 mb-2">Business objective</p>
+                    <p className="text-base font-semibold leading-relaxed">
+                      Create a business system that improves execution quality, operational consistency, and growth capacity.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Problem */}
-      <section className="py-32 px-6 lg:px-12 bg-background-surface">
-        <div className="max-w-7xl mx-auto">
-          <div className="h-px bg-border-subtle w-full mb-12" />
-          <div className="grid lg:grid-cols-2 gap-20">
-            <div>
-              <h2 className="font-serif text-4xl lg:text-5xl text-slate-900 mb-6">Where revenue leaks happen</h2>
-              <p className="text-lg text-slate-500 max-w-md">
-                Invisible friction points in your workflow are costing you qualified opportunities every day.
+      <section className="bg-white px-6 lg:px-12 py-24">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary mb-5">Business proposition</p>
+            <h2 className="font-serif text-4xl lg:text-5xl leading-[1.08] tracking-[-0.03em] text-slate-950 mb-6 max-w-2xl">
+              Most businesses do not have an effort problem. They have a systems problem.
+            </h2>
+            <p className="text-lg text-slate-600 leading-relaxed max-w-2xl mb-8">
+              More effort does not fix inconsistent content output, weak social execution, missed follow-up, disconnected tools, or fragile operations. We position Ozzilab as the systems partner that turns scattered activity into a reliable operating model.
+            </p>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-8">
+              <p className="text-sm font-bold uppercase tracking-[0.22em] text-slate-500 mb-4">Core promise</p>
+              <p className="text-2xl font-serif leading-snug text-slate-900">
+                We help businesses build a more disciplined operating system across content, social media, qualification, follow-up, and internal execution.
               </p>
             </div>
-            <div className="space-y-4">
-              {[
-                'Slow response times that kill lead momentum',
-                'Unqualified leads clogging your sales pipeline',
-                'Manual data entry errors leading to lost info',
-                'Inconsistent follow-up with potential buyers',
-                'Fragmented and siloed internal workflows',
-              ].map((t, i) => (
-                <div
-                  key={t}
-                  className="flex items-center gap-6 p-6 bg-white border border-border-subtle rounded-xl hover:border-primary transition-colors"
-                >
-                  <span className="text-primary font-serif text-2xl italic opacity-50">{String(i + 1).padStart(2, '0')}</span>
-                  <p className="text-lg font-medium text-slate-800">{t}</p>
-                </div>
-              ))}
-            </div>
+          </div>
+
+          <div className="space-y-4">
+            {frictionPoints.map((item, index) => (
+              <div key={item} className="flex gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <div className="font-serif text-2xl italic text-primary/70 min-w-10">{String(index + 1).padStart(2, '0')}</div>
+                <p className="text-lg font-medium text-slate-800 leading-relaxed">{item}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Service Pillars */}
-      <section className="py-32 px-6 lg:px-12 max-w-7xl mx-auto" id="services">
-        <div className="text-center mb-20">
-          <h2 className="font-serif text-4xl lg:text-5xl text-slate-900 mb-4">Core Automation Pillars</h2>
-          <div className="h-1 w-20 bg-primary mx-auto" />
-        </div>
-        <div className="grid md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {[
-            { title: 'Business Automation', desc: 'Core operational workflows and integrations.' },
-            { title: 'WhatsApp Automation', desc: 'Automated messaging and conversational flows.' },
-            { title: 'Email Automation', desc: 'Nurture + transactional sequences that convert.' },
-            { title: 'Lead Gen Automation', desc: 'Qualification loops and funnel optimization.' },
-          ].map((p) => (
-            <div key={p.title} className="p-8 bg-background-surface border border-border-subtle rounded-xl flex flex-col items-center text-center">
-              <span className="material-symbols-outlined text-4xl text-slate-400 mb-6 font-light">hub</span>
-              <h3 className="font-bold text-slate-900 mb-2">{p.title}</h3>
-              <p className="text-sm text-slate-500">{p.desc}</p>
-            </div>
-          ))}
-          <Link
-            href="/audit"
-            className="p-8 bg-primary border border-primary rounded-xl flex flex-col items-center text-center text-white shadow-xl shadow-primary/20"
-          >
-            <span className="material-symbols-outlined text-4xl text-white mb-6 font-light">troubleshoot</span>
-            <h3 className="font-bold mb-2">Lead Audit</h3>
-            <p className="text-sm text-white/80">Our signature diagnostic and planning service.</p>
-          </Link>
-        </div>
-      </section>
-
-      {/* Process */}
-      <section className="py-32 px-6 lg:px-12 bg-slate-900 text-white overflow-hidden relative" id="process">
+      <section id="services" className="px-6 lg:px-12 py-24 bg-slate-950 text-white">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row gap-20 items-start">
-            <div className="lg:w-1/3 lg:sticky lg:top-32">
-              <h2 className="font-serif text-4xl lg:text-5xl mb-8 leading-tight">Our architectural process.</h2>
-              <p className="text-slate-400 text-lg">Audit → (Approved) Intake → Build/Improve.</p>
-            </div>
-            <div className="lg:w-2/3 space-y-16 relative">
-              {[
-                { step: '01', title: 'Request Audit', desc: 'We diagnose your bottlenecks and data silos.' },
-                { step: '02', title: 'Review + Plan', desc: 'You get a custom automation blueprint tailored to your stack.' },
-                { step: '03', title: 'Implementation Intake', desc: 'Invite-only intake to capture specs, assets, and requirements.' },
-                { step: '04', title: 'Build + Optimize', desc: 'We ship the system and iterate until it’s airtight.' },
-              ].map((s) => (
-                <div key={s.step} className="relative">
-                  <span className="text-primary font-bold tracking-widest text-xs uppercase mb-4 block">Step {s.step}</span>
-                  <h4 className="text-2xl font-bold mb-4">{s.title}</h4>
-                  <p className="text-slate-400 leading-relaxed text-lg">{s.desc}</p>
+          <div className="max-w-3xl mb-14">
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary mb-4">What we build</p>
+            <h2 className="font-serif text-4xl lg:text-5xl leading-[1.08] tracking-[-0.03em] mb-5 max-w-2xl">
+              Systems infrastructure designed around execution, not complexity.
+            </h2>
+            <p className="text-lg text-slate-300 leading-relaxed">
+              The objective is not to add more tools. The objective is to engineer a cleaner business system that supports content production, distribution, conversion, and internal execution from one operating layer.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {systemPillars.map((pillar) => {
+              const imageMap: Record<string, string> = {
+                'Content Production Systems': '/homepage-images/pillar-content-systems-v2.png',
+                'Social Media Execution': '/homepage-images/pillar-social-execution-v2.png',
+                'Qualification and Follow-Up': '/homepage-images/pillar-qualification-followup-v2.png',
+                'Operational Infrastructure': '/homepage-images/pillar-operations-infrastructure-v2.png',
+              }
+
+              return (
+                <div key={pillar.title} className="rounded-3xl border border-white/10 bg-white/[0.04] p-8">
+                  <div className="mb-6 overflow-hidden rounded-2xl border border-white/10 bg-white">
+                    <Image
+                      src={imageMap[pillar.title]}
+                      alt={pillar.title}
+                      width={800}
+                      height={800}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  <h3 className="text-2xl font-semibold mb-3">{pillar.title}</h3>
+                  <p className="text-slate-300 leading-relaxed">{pillar.desc}</p>
                 </div>
-              ))}
-            </div>
+              )
+            })}
           </div>
         </div>
       </section>
 
-      {/* Final CTA */}
-      <section className="py-32 px-6 lg:px-12 border-t border-border-subtle bg-white">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="font-serif text-5xl lg:text-7xl text-slate-900 mb-12 leading-tight">
-            Ready to reclaim your <span className="italic text-primary">revenue efficiency</span>?
-          </h2>
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6">
+      <section className="px-6 lg:px-12 py-24 bg-white">
+        <div className="max-w-7xl mx-auto">
+          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
+            <div className="max-w-2xl">
+              <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary mb-4">Why this matters</p>
+              <h2 className="font-serif text-4xl lg:text-5xl leading-[1.08] tracking-[-0.03em] text-slate-950 mb-4 max-w-2xl">
+                Better systems create better execution.
+              </h2>
+              <p className="text-lg text-slate-600 leading-relaxed">
+                The homepage should communicate operational maturity. Professionals should immediately see that the offer is structured, outcome-oriented, and built to improve how the business executes.
+              </p>
+            </div>
             <Link
               href="/audit"
-              className="bg-primary text-white px-10 py-5 rounded-lg font-bold text-lg hover:bg-blue-700 transition-all w-full md:w-auto"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 px-6 py-3 text-sm font-bold text-slate-900 hover:bg-slate-50"
             >
-              Request Audit
+              Start with an audit
+            </Link>
+          </div>
+
+          <div className="overflow-hidden rounded-3xl border border-slate-200 bg-slate-50">
+            <Image
+              src="/homepage-images/homepage-execution-comparison-v2.png"
+              alt="Comparison graphic showing manual execution versus system-led execution"
+              width={1600}
+              height={900}
+              className="w-full h-auto border-b border-slate-200"
+            />
+            <div className="grid grid-cols-3 border-b border-slate-200 bg-white px-6 py-5 text-xs font-bold uppercase tracking-[0.22em] text-slate-500">
+              <div>Execution layer</div>
+              <div>Manual setup</div>
+              <div>System-led setup</div>
+            </div>
+            {outcomes.map((row, index) => (
+              <div
+                key={row.label}
+                className={`grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 px-6 py-6 ${index !== outcomes.length - 1 ? 'border-b border-slate-200' : ''}`}
+              >
+                <div className="font-semibold text-slate-900">{row.label}</div>
+                <div className="text-slate-500">{row.manual}</div>
+                <div className="text-slate-900 font-semibold">{row.system}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="process" className="px-6 lg:px-12 py-24 bg-[linear-gradient(180deg,#eef4ff_0%,#ffffff_100%)]">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-12">
+          <div className="lg:col-span-4">
+            <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary mb-4">Process</p>
+            <h2 className="font-serif text-4xl lg:text-5xl leading-[1.08] tracking-[-0.03em] text-slate-950 mb-6 max-w-md">
+              A disciplined build sequence.
+            </h2>
+            <p className="text-lg text-slate-600 leading-relaxed max-w-md">
+              We do not position this as generic agency work. The process is diagnostic first, then architectural, then implementation-led.
+            </p>
+          </div>
+
+          <div className="lg:col-span-8 space-y-5">
+            <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+              <Image
+                src="/homepage-images/homepage-process-flow-v2.png"
+                alt="Process flow showing audit, design, build, and refine"
+                width={1600}
+                height={900}
+                className="w-full h-auto border-b border-slate-200"
+              />
+              <div className="p-7 space-y-5">
+                {buildSequence.map((item) => (
+                  <div key={item.step} className="rounded-2xl border border-slate-200 bg-slate-50 p-6">
+                    <div className="flex flex-col md:flex-row md:items-start gap-5 md:gap-8">
+                      <div className="min-w-20 text-primary text-xs font-bold uppercase tracking-[0.24em] pt-1">Step {item.step}</div>
+                      <div>
+                        <h3 className="text-2xl font-semibold text-slate-950 mb-3">{item.title}</h3>
+                        <p className="text-lg text-slate-600 leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="px-6 lg:px-12 py-24 bg-slate-950 text-white border-t border-white/10">
+        <div className="max-w-5xl mx-auto text-center">
+          <p className="text-xs font-bold uppercase tracking-[0.24em] text-primary mb-5">Final call to action</p>
+          <h2 className="font-serif text-5xl lg:text-6xl leading-[1.06] tracking-[-0.03em] mb-8 max-w-4xl mx-auto">
+            Build the system before you add more effort.
+          </h2>
+          <p className="max-w-2xl mx-auto text-lg text-slate-300 leading-relaxed mb-10">
+            If your business depends too heavily on manual effort, we can diagnose the bottlenecks and define the system architecture required to improve execution across content, operations, and growth.
+          </p>
+          <div className="flex flex-col sm:flex-row justify-center gap-4">
+            <Link
+              href="/audit"
+              className="inline-flex items-center justify-center rounded-xl bg-primary px-8 py-4 text-base font-bold text-white shadow-lg shadow-primary/20 transition-all hover:-translate-y-0.5"
+            >
+              Request a System Audit
             </Link>
             <Link
               href="/library"
-              className="text-slate-600 font-bold border-b-2 border-slate-200 hover:border-primary transition-all pb-1"
+              className="inline-flex items-center justify-center rounded-xl border border-white/15 bg-white/5 px-8 py-4 text-base font-bold text-white hover:bg-white/10"
             >
-              Explore Library
+              Review the Library
             </Link>
           </div>
-          <p className="mt-12 text-slate-400 text-sm">No spam. If you’re approved, you’ll receive an invite-only intake link.</p>
+          <p className="mt-8 text-sm text-slate-400">Positioning: premium, selective, and built for serious operators.</p>
         </div>
       </section>
     </main>

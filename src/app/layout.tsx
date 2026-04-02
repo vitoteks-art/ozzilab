@@ -14,8 +14,9 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: 'Ozzilab.cloud — Premium Business Automation',
-  description: 'Business automation systems: WhatsApp, email, lead gen, and audit-led delivery.',
+  title: 'Ozzilab — Systems for Content, Operations, and Growth',
+  description:
+    'Ozzilab builds systems for content, social media execution, operations, and automation through audit-led workflow architecture.',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

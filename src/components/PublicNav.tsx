@@ -52,7 +52,7 @@ export function PublicNav() {
             <div className="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
               <span className="material-symbols-outlined">rocket_launch</span>
             </div>
-            <span className="text-slate-900 text-lg font-bold leading-tight tracking-tight">Ozzilab.cloud</span>
+            <span className="text-slate-900 text-lg font-bold leading-tight tracking-tight">Ozzilab</span>
           </Link>
 
           {onLibrary ? (
@@ -94,6 +94,9 @@ export function PublicNav() {
                 <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/products">
                   Products
                 </Link>
+                <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/audit">
+                  Audit
+                </Link>
                 <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/library">
                   Library
                 </Link>
@@ -132,6 +135,9 @@ export function PublicNav() {
             </Link>
             <Link className="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="/products">
               Products
+            </Link>
+            <Link className="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="/audit">
+              Audit
             </Link>
             <Link
               className={`${onLibrary ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-slate-600 hover:text-primary font-medium'} text-sm transition-colors`}
