@@ -41,7 +41,7 @@ export function DownloadsClient() {
   }
 
   return (
-    <main className="max-w-4xl mx-auto w-full px-6 lg:px-12 py-12">
+    <main className="max-w-4xl mx-auto w-full px-6 lg:px-10 xl:px-16 py-12">
       <nav className="flex items-center gap-2 text-sm text-slate-500 mb-6">
         <Link className="hover:text-primary transition-colors" href="/library">
           Systems Library

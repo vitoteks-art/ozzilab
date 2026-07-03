@@ -8,7 +8,7 @@ export default async function IntakeThanksPage({
   const { submissionId } = await searchParams
   return (
     <main className="bg-background-surface">
-      <section className="max-w-3xl mx-auto px-6 lg:px-12 py-20">
+      <section className="max-w-3xl mx-auto px-6 lg:px-10 xl:px-16 py-20">
         <div className="bg-white border border-border-subtle rounded-2xl p-10">
           <h1 className="font-serif text-4xl text-slate-900 mb-4">Intake submitted</h1>
           <p className="text-slate-600 text-lg mb-8">We’ll review your submission and follow up with next steps.</p>

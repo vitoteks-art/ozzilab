@@ -63,14 +63,14 @@ export default function AdminLibraryEditPage() {
   if (!item) {
     return (
       <main className="bg-background-surface">
-        <section className="max-w-3xl mx-auto px-6 lg:px-12 py-12">Loading…</section>
+        <section className="max-w-3xl mx-auto px-6 lg:px-10 xl:px-16 py-12">Loading…</section>
       </main>
     )
   }
 
   return (
     <main className="bg-background-surface">
-      <section className="max-w-3xl mx-auto px-6 lg:px-12 py-12">
+      <section className="max-w-3xl mx-auto px-6 lg:px-10 xl:px-16 py-12">
         <div className="flex items-start justify-between gap-6 mb-8">
           <div>
             <h1 className="font-serif text-4xl text-slate-900">Edit Item</h1>

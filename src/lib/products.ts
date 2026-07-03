@@ -54,9 +54,9 @@ export const PRODUCTS: Product[] = [
     title: 'Build an Ozzi-Style Operator Agent (That Actually Works)',
     subtitle: 'A step-by-step implementation guide with governance, memory, workflows, and approvals — OpenClaw-first.',
     description:
-      'Build an operator-grade AI agent that ships outcomes reliably: clear job, doctrine, approval gates, memory that doesn’t rot, and daily/weekly operating loops.',
+      'Build an operator-grade AI agent that ships outcomes reliably: a clear role, practical operating rules, review checkpoints, durable memory, and daily/weekly execution loops.',
     heroBullets: [
-      'A governance-first blueprint: doctrine + hard rules + approval gates.',
+      'A governance-first blueprint: doctrine, hard rules, and review checkpoints.',
       'A 3-layer memory system: session → daily log → long-term templates.',
       'Daily + weekly loops that produce execution, not chatter.',
     ],

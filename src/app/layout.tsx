@@ -1,28 +1,34 @@
 import type { Metadata } from 'next'
-import { Manrope, Playfair_Display } from 'next/font/google'
+import { Geist } from 'next/font/google'
 import './globals.css'
 import { LayoutChrome } from '@/components/LayoutChrome'
 
-const manrope = Manrope({
-  variable: '--font-manrope',
-  subsets: ['latin'],
-})
-
-const playfair = Playfair_Display({
-  variable: '--font-playfair',
+const geist = Geist({
+  variable: '--font-geist',
   subsets: ['latin'],
 })
 
 export const metadata: Metadata = {
-  title: 'Ozzilab — Systems for Content, Operations, and Growth',
+  title: 'OZZILAB by Vitotek Systems — Appointment Growth Systems',
   description:
-    'Ozzilab builds systems for content, social media execution, operations, and automation through audit-led workflow architecture.',
+    'Premium websites, lead capture, CRM workflows, follow-up automation, and appointment booking systems for appointment-driven businesses.',
+  icons: {
+    icon: '/icon.svg',
+    shortcut: '/icon.svg',
+    apple: '/apple-icon.svg',
+  },
+  manifest: '/manifest.webmanifest',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html className="light" lang="en">
+    <html className="light" lang="en" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var t=localStorage.getItem('ozzilab-theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');document.documentElement.classList.toggle('dark',t==='dark');document.documentElement.classList.toggle('light',t!=='dark');document.documentElement.dataset.theme=t;document.documentElement.style.colorScheme=t;}catch(e){}`,
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
@@ -30,7 +36,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
         />
       </head>
-      <body className={`${manrope.variable} ${playfair.variable} antialiased bg-background-light text-slate-900 selection:bg-primary/10`}>
+      <body className={`${geist.variable} antialiased bg-background-light text-slate-900 selection:bg-primary/10`} suppressHydrationWarning>
         <LayoutChrome>{children}</LayoutChrome>
       </body>
     </html>

@@ -1,0 +1,9 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="1" y="1" width="62" height="62" rx="18" fill="#0F172A"/>
+  <rect x="1" y="1" width="62" height="62" rx="18" stroke="url(#stroke)" stroke-width="2"/>
+  <path d="M20.5 42.5C14.85 42.5 10.5 38.04 10.5 32C10.5 25.96 14.85 21.5 20.5 21.5C26.15 21.5 30.5 25.96 30.5 32C30.5 38.04 26.15 42.5 20.5 42.5ZM20.5 37.35C23.03 37.35 24.95 35.15 24.95 32C24.95 28.85 23.03 26.65 20.5 26.65C17.97 26.65 16.05 28.85 16.05 32C16.05 35.15 17.97 37.35 20.5 37.35Z" fill="white"/>
+  <path d="M31.8 22H37.7L42.25 35.15L46.8 22H52.6L45.05 42H39.35L31.8 22Z" fill="#93C5FD"/>
+  <path d="M54.2 13.8C50.5 11.2 45.98 9.65 41.1 9.65C30.1 9.65 21.02 17.43 19.22 27.78" stroke="#3B82F6" stroke-width="3" stroke-linecap="round"/>
+  <path d="M9.8 50.2C13.5 52.8 18.02 54.35 22.9 54.35C33.9 54.35 42.98 46.57 44.78 36.22" stroke="#60A5FA" stroke-width="3" stroke-linecap="round"/>
+  <defs><linearGradient id="stroke" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse"><stop stop-color="#60A5FA"/><stop offset="0.5" stop-color="#FFFFFF" stop-opacity="0.28"/><stop offset="1" stop-color="#1D4ED8"/></linearGradient></defs>
+</svg>

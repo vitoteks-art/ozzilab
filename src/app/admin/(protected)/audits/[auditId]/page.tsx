@@ -14,14 +14,14 @@ export default async function AdminAuditDetailPage({ params }: { params: Promise
   if (!audit) {
     return (
       <main className="bg-background-surface">
-        <section className="max-w-4xl mx-auto px-6 lg:px-12 py-16">Not found.</section>
+        <section className="max-w-4xl mx-auto px-6 lg:px-10 xl:px-16 py-16">Not found.</section>
       </main>
     )
   }
 
   return (
     <main className="bg-background-surface">
-      <section className="max-w-4xl mx-auto px-6 lg:px-12 py-12">
+      <section className="max-w-4xl mx-auto px-6 lg:px-10 xl:px-16 py-12">
         <div className="flex items-start justify-between gap-6 mb-8">
           <div>
             <Link href="/admin/audits" className="text-sm font-semibold text-primary">

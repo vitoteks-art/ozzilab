@@ -16,3 +16,7 @@ export function makeAuditId() {
 export function makeSubmissionId() {
   return `SUB-${yyyymmdd()}-${alpha()}`
 }
+
+export function makeBookingId() {
+  return `BKG-${yyyymmdd()}-${alpha()}`
+}

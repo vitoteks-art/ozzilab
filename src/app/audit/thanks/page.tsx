@@ -8,10 +8,10 @@ export default async function AuditThanksPage({
   const { auditId } = await searchParams
   return (
     <main className="bg-background-surface">
-      <section className="max-w-3xl mx-auto px-6 lg:px-12 py-20">
+      <section className="max-w-3xl mx-auto px-6 lg:px-10 xl:px-16 py-20">
         <div className="bg-white border border-border-subtle rounded-2xl p-10">
           <h1 className="font-serif text-4xl text-slate-900 mb-4">Audit request received</h1>
-          <p className="text-slate-600 text-lg mb-8">We’ll review and reply with next steps within 24–48 hours.</p>
+          <p className="text-slate-600 text-lg mb-8">We’ll review your submission and reply with practical next steps.</p>
           {auditId ? (
             <div className="p-4 rounded-xl bg-background-surface border border-border-subtle mb-8">
               <p className="text-sm text-slate-500">Your Audit ID</p>

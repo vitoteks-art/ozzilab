@@ -83,6 +83,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             <NavItem href="/admin/library" icon="library_books" label="Library Management" />
             <NavItem href="/admin/purchases" icon="payments" label="Payments" />
             <NavItem href="/admin/audits" icon="group" label="Audits" />
+            <NavItem href="/admin/bookings" icon="event_available" label="Bookings" />
           </div>
 
           <div className="flex flex-col gap-1">

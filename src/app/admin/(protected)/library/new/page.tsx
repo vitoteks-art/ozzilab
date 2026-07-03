@@ -33,7 +33,7 @@ export default function AdminLibraryNewPage() {
 
   return (
     <main className="bg-background-surface">
-      <section className="max-w-3xl mx-auto px-6 lg:px-12 py-12">
+      <section className="max-w-3xl mx-auto px-6 lg:px-10 xl:px-16 py-12">
         <h1 className="font-serif text-4xl text-slate-900 mb-8">New Library Item</h1>
         <form onSubmit={onSubmit} className="bg-white border border-border-subtle rounded-2xl p-8 space-y-4">
           <label className="block space-y-1">

@@ -14,7 +14,7 @@ export function IntakeClient() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const [submissionId, setSubmissionId] = useState<string | null>(null)
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [uploading, setUploading] = useState(false)
   const [uploadMsg, setUploadMsg] = useState<string | null>(null)
 
@@ -56,44 +56,29 @@ export function IntakeClient() {
       })
       const json = await res.json()
       if (!res.ok) throw new Error(json?.error || 'Failed')
-      setSubmissionId(json.submissionId)
+      if (selectedFiles.length) {
+        setUploading(true)
+        for (const file of selectedFiles) {
+          const upload = new FormData()
+          upload.set('submissionId', json.submissionId)
+          upload.set('file', file)
+          const uploadRes = await fetch(`/api/uploads?t=${encodeURIComponent(t)}`, { method: 'POST', body: upload })
+          const uploadJson = await uploadRes.json()
+          if (!uploadRes.ok) throw new Error(uploadJson?.error || 'Upload failed')
+        }
+        setUploadMsg('Uploads complete.')
+      }
       router.push(`/intake/thanks?submissionId=${encodeURIComponent(json.submissionId)}`)
     } catch (err: any) {
       setError(err?.message || 'Something went wrong')
     }
   }
 
-  async function uploadFiles(files: FileList | null) {
-    if (!files || !files.length) return
-    if (!submissionId) {
-      setUploadMsg('Submit the form first to get a Submission ID, then upload files.')
-      return
-    }
-
-    setUploading(true)
-    setUploadMsg(null)
-    try {
-      for (const file of Array.from(files)) {
-        const fd = new FormData()
-        fd.set('submissionId', submissionId)
-        fd.set('file', file)
-        const res = await fetch(`/api/uploads?t=${encodeURIComponent(t)}`, { method: 'POST', body: fd })
-        const json = await res.json()
-        if (!res.ok) throw new Error(json?.error || 'Upload failed')
-      }
-      setUploadMsg('Uploads complete.')
-    } catch (e: any) {
-      setUploadMsg(e?.message || 'Upload failed')
-    } finally {
-      setUploading(false)
-    }
-  }
-
   return (
     <main className="bg-background-surface">
-      <section className="max-w-4xl mx-auto px-6 lg:px-12 py-16">
+      <section className="max-w-4xl mx-auto px-6 lg:px-10 xl:px-16 py-16">
         <div className="mb-10">
-          <h1 className="font-serif text-4xl lg:text-5xl text-slate-900 mb-4">Client Intake (Invite-only)</h1>
+          <h1 className="text-4xl lg:text-5xl font-semibold tracking-[-0.03em] text-slate-900 mb-4">Client Intake (Invite-only)</h1>
           <p className="text-slate-600 text-lg">Complete this only if you received an approved invite link.</p>
         </div>
 
@@ -183,8 +168,9 @@ export function IntakeClient() {
 
               <div className="pt-4 border-t border-border-subtle">
                 <p className="text-sm font-semibold text-slate-800 mb-2">Uploads</p>
-                <p className="text-xs text-slate-500 mb-4">After submission, upload supporting files (PDF, images, zip, docs).</p>
-                <input type="file" multiple onChange={(e) => uploadFiles(e.target.files)} disabled={uploading} className="block w-full text-sm" />
+                <p className="text-xs text-slate-500 mb-4">Attach supporting files before final submit (PDF, images, zip, docs). They will upload with your intake.</p>
+                <input type="file" multiple onChange={(e) => setSelectedFiles(Array.from(e.target.files || []))} disabled={uploading} className="block w-full text-sm" />
+                {selectedFiles.length ? <p className="text-xs text-slate-600 mt-3">{selectedFiles.length} file(s) selected.</p> : null}
                 {uploadMsg ? <p className="text-xs text-slate-600 mt-3">{uploadMsg}</p> : null}
               </div>
             </form>

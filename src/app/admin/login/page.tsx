@@ -40,7 +40,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex flex-col bg-background-light text-slate-900">
       {/* Top Navigation Bar */}
       <header className="w-full bg-white/80 backdrop-blur-md border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div className="max-w-[1480px] mx-auto px-6 h-20 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
               <span className="material-symbols-outlined text-xl">shield_person</span>
@@ -181,7 +181,7 @@ export default function AdminLoginPage() {
 
       {/* Page Footer */}
       <footer className="w-full py-8 px-6 border-t border-slate-200 bg-white">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="max-w-[1480px] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="text-slate-500 text-xs font-display">© {year} Ozzilab.cloud Business Automation. All rights reserved.</div>
           <div className="flex items-center gap-6">
             <Link className="text-xs text-slate-500 hover:text-primary transition-colors" href="/privacy">

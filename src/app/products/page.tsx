@@ -9,7 +9,7 @@ export default function ProductsIndexPage() {
 
   return (
     <main className="bg-background-surface">
-      <section className="max-w-6xl mx-auto px-6 lg:px-12 py-16">
+      <section className="max-w-6xl mx-auto px-6 lg:px-10 xl:px-16 py-16">
         <div className="flex items-end justify-between gap-6 mb-10">
           <div>
             <h1 className="font-serif text-4xl lg:text-5xl text-slate-900">Digital Products</h1>

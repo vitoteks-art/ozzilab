@@ -1,11 +1,15 @@
 'use client'
 
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { getNicheLabel } from '@/lib/niches'
 import { DecisionMakerFields } from './DecisionMakerFields'
 
-export default function AuditPage() {
+function AuditPageContent() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const industrySlug = searchParams.get('industry')
+  const industryLabel = getNicheLabel(industrySlug)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -37,8 +41,8 @@ export default function AuditPage() {
     <main className="bg-background-light text-slate-900 py-12 lg:py-20 px-6">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tight mb-4">Request Audit</h2>
-          <p className="text-xl text-slate-500 max-w-xl mx-auto font-medium">Share a few details. We’ll review and respond with next steps.</p>
+          <h2 className="text-4xl lg:text-5xl font-black text-slate-900 tracking-tight mb-4">Free Lead & Appointment-Leak Audit</h2>
+          <p className="text-xl text-slate-500 max-w-xl mx-auto font-medium">Share a few details. We’ll review your website, lead capture, follow-up, and booking flow, then reply with practical next steps.</p>
         </div>
 
         <div className="bg-white rounded-[2rem] shadow-xl shadow-slate-200/50 border border-slate-200 overflow-hidden">
@@ -140,6 +144,23 @@ export default function AuditPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="industry">
+                      Industry / Niche
+                    </label>
+                    <input
+                      id="industry"
+                      name="industry"
+                      type="text"
+                      defaultValue={industryLabel}
+                      placeholder="e.g. Dental clinic, immigration consultant"
+                      className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
+                    />
+                  </div>
+                  <input type="hidden" name="sourceIndustrySlug" value={industrySlug || ''} />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="instagramUrl">
                       Instagram Profile URL
                     </label>
@@ -189,6 +210,34 @@ export default function AuditPage() {
                       name="schedulerUrl"
                       type="url"
                       placeholder="https://calendly.com/..."
+                      className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="googleBusinessUrl">
+                      Google Business Profile URL
+                    </label>
+                    <input
+                      id="googleBusinessUrl"
+                      name="googleBusinessUrl"
+                      type="url"
+                      placeholder="https://maps.google.com/..."
+                      className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="appointmentBookingMethod">
+                      Current Appointment Booking Method
+                    </label>
+                    <input
+                      id="appointmentBookingMethod"
+                      name="appointmentBookingMethod"
+                      type="text"
+                      placeholder="Manual calls, Calendly, WhatsApp, CRM, etc."
                       className="w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all placeholder:text-slate-400"
                     />
                   </div>
@@ -269,6 +318,28 @@ export default function AuditPage() {
                   </div>
 
                   <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="averageClientValueRange">
+                      Average Client Value
+                    </label>
+                    <select
+                      id="averageClientValueRange"
+                      name="averageClientValueRange"
+                      className="form-select-custom w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                      defaultValue=""
+                    >
+                      <option value="" disabled>
+                        Select value range
+                      </option>
+                      <option>Under $500</option>
+                      <option>$500 - $2,000</option>
+                      <option>$2,000 - $10,000</option>
+                      <option>$10,000+</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="flex flex-col gap-2">
                     <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="primaryGoal">
                       Primary Goal
                     </label>
@@ -286,6 +357,49 @@ export default function AuditPage() {
                       <option>Improve Conversion Rate</option>
                       <option>Systemize Fulfilment</option>
                       <option>Reduce Acquisition Cost</option>
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="urgencyReadiness">
+                      Urgency / Readiness
+                    </label>
+                    <select
+                      id="urgencyReadiness"
+                      name="urgencyReadiness"
+                      className="form-select-custom w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                      defaultValue=""
+                    >
+                      <option value="" disabled>
+                        Select readiness
+                      </option>
+                      <option>Ready now</option>
+                      <option>Within 30 days</option>
+                      <option>Researching options</option>
+                      <option>Need audit first</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm font-bold text-slate-700 ml-1" htmlFor="preferredPackageInterest">
+                      Preferred Package Interest
+                    </label>
+                    <select
+                      id="preferredPackageInterest"
+                      name="preferredPackageInterest"
+                      className="form-select-custom w-full px-5 py-4 rounded-xl border border-slate-200 bg-slate-50 text-slate-900 focus:ring-4 focus:ring-primary/10 focus:border-primary outline-none transition-all"
+                      defaultValue=""
+                    >
+                      <option value="" disabled>
+                        Select package
+                      </option>
+                      <option>Audit & Quick Fix</option>
+                      <option>Website Refresh + Lead Capture</option>
+                      <option>Growth System</option>
+                      <option>Premium Growth Engine</option>
+                      <option>Monthly Management</option>
                     </select>
                   </div>
                 </div>
@@ -345,5 +459,13 @@ export default function AuditPage() {
         </div>
       </div>
     </main>
+  )
+}
+
+export default function AuditPage() {
+  return (
+    <Suspense fallback={<main className="bg-background-light px-6 py-20 text-center text-slate-600">Loading audit form…</main>}>
+      <AuditPageContent />
+    </Suspense>
   )
 }

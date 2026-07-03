@@ -65,7 +65,7 @@ export function LibraryClient({ items }: { items: Item[] }) {
   }, [items])
 
   return (
-    <main className="flex-1 flex flex-col max-w-[1280px] mx-auto w-full px-6 lg:px-12 py-12">
+    <main className="flex-1 flex flex-col max-w-[1480px] mx-auto w-full px-6 lg:px-10 xl:px-16 py-12">
       {/* Hero */}
       <div className="flex flex-wrap justify-between items-end gap-6 mb-10">
         <div className="flex flex-col gap-3">

@@ -28,7 +28,7 @@ export async function POST(req: Request) {
     const lead = await prisma.lead.create({
       data: { email, whatsapp: whatsapp || null, name: name || null, source: 'LIBRARY_FREE_DOWNLOAD' },
     }).catch(async () => {
-      // if duplicate emails become a thing later, convert to upsert; for MVP just create new
+      // Create a download lead record for each request.
       return prisma.lead.create({ data: { email, whatsapp: whatsapp || null, name: name || null, source: 'LIBRARY_FREE_DOWNLOAD' } })
     })
 

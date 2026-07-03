@@ -28,7 +28,7 @@ export async function POST(req: Request) {
         email,
         whatsapp,
         name: name || null,
-        // Reuse existing enum for MVP
+        // Reuse the existing download type for free product requests.
         source: 'LIBRARY_FREE_DOWNLOAD',
       },
     })

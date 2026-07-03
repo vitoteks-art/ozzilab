@@ -1,15 +1,22 @@
 'use client'
 
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
+import { BrandLogo } from '@/components/BrandLogo'
+import { ThemeToggle } from '@/components/ThemeToggle'
 
 type AdminState = { loggedIn: boolean; email?: string }
 
-export function PublicNav() {
-  const pathname = usePathname()
-  const onLibrary = pathname === '/library' || pathname.startsWith('/library/')
+const navItems = [
+  { href: '/services', label: 'Services' },
+  { href: '/industries', label: 'Industries' },
+  { href: '/projects', label: 'Projects' },
+  { href: '/pricing', label: 'Pricing' },
+  { href: '/library', label: 'Resources' },
+  { href: '/about', label: 'About' },
+]
 
+export function PublicNav() {
   const [admin, setAdmin] = useState<AdminState>({ loggedIn: false })
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -19,178 +26,61 @@ export function PublicNav() {
       try {
         const res = await fetch('/api/admin/me', { cache: 'no-store' })
         const json = await res.json()
-        if (cancelled) return
-        if (json?.loggedIn) setAdmin({ loggedIn: true, email: json?.admin?.email })
-        else setAdmin({ loggedIn: false })
+        if (!cancelled) setAdmin(json?.loggedIn ? { loggedIn: true, email: json?.admin?.email } : { loggedIn: false })
       } catch {
         if (!cancelled) setAdmin({ loggedIn: false })
       }
     })()
-    return () => {
-      cancelled = true
-    }
+    return () => { cancelled = true }
   }, [])
 
-  async function logout() {
-    try {
-      await fetch('/api/admin/logout', { method: 'POST' })
-    } finally {
-      // ensure UI updates
-      window.location.href = '/'
-    }
-  }
-
-  function closeMobile() {
-    setMobileOpen(false)
-  }
-
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/90 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 py-3 flex items-center justify-between gap-6">
-        <div className="flex items-center gap-6">
-          <Link href="/" className="flex items-center gap-3 text-primary">
-            <div className="size-8 flex items-center justify-center bg-primary rounded-lg text-white">
-              <span className="material-symbols-outlined">rocket_launch</span>
-            </div>
-            <span className="text-slate-900 text-lg font-bold leading-tight tracking-tight">Ozzilab</span>
-          </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200/70 bg-white/82 backdrop-blur-xl">
+      <div className="mx-auto flex h-[76px] max-w-[1480px] items-center justify-between px-5 md:px-10 xl:px-16">
+        <BrandLogo />
 
-          {onLibrary ? (
-            <label className="hidden md:flex flex-col min-w-40 h-10 max-w-72">
-              <div className="flex w-full flex-1 items-stretch rounded-lg h-full bg-slate-100 border border-slate-200">
-                <div className="text-slate-500 flex items-center justify-center pl-4">
-                  <span className="material-symbols-outlined text-[20px]">search</span>
-                </div>
-                <input
-                  className="form-input flex w-full min-w-0 flex-1 border-none bg-transparent focus:ring-0 h-full placeholder:text-slate-500 px-4 pl-2 text-sm font-normal"
-                  placeholder="Search systems..."
-                />
-              </div>
-            </label>
-          ) : null}
+        <nav className="hidden items-center rounded-full border border-slate-200/80 bg-slate-50/70 px-2 py-2 shadow-sm md:flex">
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href} className="rounded-full px-5 py-2.5 text-[15px] font-semibold text-slate-600 transition-all hover:bg-white hover:text-blue-700 hover:shadow-sm">
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="hidden items-center gap-3 md:flex">
+          <ThemeToggle compact />
+          <Link href="/book" className="rounded-full border border-slate-200 bg-white px-5 py-3 text-[14px] font-bold text-slate-800 shadow-sm transition-all hover:border-blue-200 hover:text-blue-700 hover:shadow-md">
+            Book Call
+          </Link>
+          <Link href="/audit" className="rounded-full bg-blue-600 px-5 py-3 text-[14px] font-bold text-white shadow-[0_14px_30px_rgba(37,99,235,0.22)] transition-all hover:-translate-y-0.5 hover:bg-blue-700 hover:shadow-[0_18px_38px_rgba(37,99,235,0.28)]">
+            Request Audit
+          </Link>
+          {admin.loggedIn ? <Link className="rounded-full bg-slate-950 px-4 py-3 text-[14px] font-bold text-white" href="/admin">Admin</Link> : null}
         </div>
 
-        <div className="flex flex-1 justify-end gap-4 items-center">
-          {/* Mobile menu button */}
-          <button
-            type="button"
-            className="lg:hidden inline-flex size-10 items-center justify-center rounded-lg border border-border-subtle bg-white"
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={mobileOpen}
-            onClick={() => setMobileOpen((v) => !v)}
-          >
-            <span className="material-symbols-outlined">{mobileOpen ? 'close' : 'menu'}</span>
-          </button>
+        <button className="flex size-11 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-700 shadow-sm md:hidden" type="button" onClick={() => setMobileOpen((v) => !v)} aria-label="Toggle menu">
+          <span className="material-symbols-outlined">{mobileOpen ? 'close' : 'menu'}</span>
+        </button>
+      </div>
 
-          {mobileOpen ? (
-            <div className="lg:hidden absolute left-0 right-0 top-full border-b border-border-subtle bg-white">
-              <div className="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex flex-col gap-2">
-                <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/#services">
-                  Services
-                </Link>
-                <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/#process">
-                  How it works
-                </Link>
-                <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/products">
-                  Products
-                </Link>
-                <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/audit">
-                  Audit
-                </Link>
-                <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/library">
-                  Library
-                </Link>
-                <div className="h-px bg-border-subtle my-2" />
-                {admin.loggedIn ? (
-                  <>
-                    <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/admin">
-                      Admin
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        closeMobile()
-                        void logout()
-                      }}
-                      className="text-left py-2 text-slate-900 font-semibold"
-                    >
-                      Logout
-                    </button>
-                  </>
-                ) : (
-                  <Link onClick={closeMobile} className="py-2 text-slate-900 font-semibold" href="/admin/login">
-                    Login
-                  </Link>
-                )}
-              </div>
+      {mobileOpen ? (
+        <div className="border-t border-slate-200 bg-white/95 px-5 py-5 shadow-2xl backdrop-blur-xl md:hidden">
+          <div className="mx-auto grid max-w-[1480px] gap-2">
+            {navItems.map((item) => (
+              <Link key={item.href} href={item.href} onClick={() => setMobileOpen(false)} className="rounded-xl px-4 py-3 text-base font-bold text-slate-700 hover:bg-slate-50">
+                {item.label}
+              </Link>
+            ))}
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <Link href="/book" onClick={() => setMobileOpen(false)} className="rounded-xl border border-slate-200 px-4 py-3 text-center text-sm font-bold text-slate-800">Book Call</Link>
+              <Link href="/audit" onClick={() => setMobileOpen(false)} className="rounded-xl bg-blue-600 px-4 py-3 text-center text-sm font-bold text-white">Request Audit</Link>
             </div>
-          ) : null}
-
-          <nav className="hidden lg:flex items-center gap-8">
-            <Link className="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="/#services">
-              Services
-            </Link>
-            <Link className="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="/#process">
-              How it works
-            </Link>
-            <Link className="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="/products">
-              Products
-            </Link>
-            <Link className="text-slate-600 hover:text-primary text-sm font-medium transition-colors" href="/audit">
-              Audit
-            </Link>
-            <Link
-              className={`${onLibrary ? 'text-primary font-bold border-b-2 border-primary pb-1' : 'text-slate-600 hover:text-primary font-medium'} text-sm transition-colors`}
-              href="/library"
-            >
-              Library
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-3">
-            <Link
-              href="/audit"
-              className="flex h-10 items-center justify-center rounded-lg px-4 bg-primary text-white text-sm font-bold hover:opacity-90 transition-opacity"
-            >
-              Request Audit
-            </Link>
-            {onLibrary ? (
-              <Link
-                href="/library/downloads"
-                className="hidden sm:flex h-10 items-center justify-center rounded-lg px-4 bg-slate-100 text-slate-900 text-sm font-bold hover:bg-slate-200 transition-colors"
-              >
-                My Downloads
-              </Link>
-            ) : null}
-            {admin.loggedIn ? (
-              <>
-                <Link
-                  href="/admin"
-                  className="flex h-10 items-center justify-center rounded-lg px-4 bg-slate-100 text-slate-900 text-sm font-bold hover:bg-slate-200 transition-colors"
-                  title={admin.email || 'Admin'}
-                >
-                  Admin
-                </Link>
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="hidden sm:flex h-10 items-center justify-center rounded-lg px-4 bg-slate-100 text-slate-900 text-sm font-bold hover:bg-slate-200 transition-colors"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <Link
-                href="/admin/login"
-                className="flex h-10 items-center justify-center rounded-lg px-4 bg-slate-100 text-slate-900 text-sm font-bold hover:bg-slate-200 transition-colors"
-                title="Admin login"
-              >
-                Login
-              </Link>
-            )}
+            <div className="mt-3">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
-      </div>
+      ) : null}
     </header>
   )
 }

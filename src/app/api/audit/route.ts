@@ -19,6 +19,7 @@ const schema = z.object({
   instagramUrl: z.string().url().optional().or(z.literal('')),
   youtubeUrl: z.string().url().optional().or(z.literal('')),
   linkedinUrl: z.string().url().optional().or(z.literal('')),
+  googleBusinessUrl: z.string().url().optional().or(z.literal('')),
 
   // decision maker (mandatory)
   decisionMakerStatus: z.enum(['YES', 'NO', 'SHARED']),
@@ -37,6 +38,10 @@ const schema = z.object({
   monthlyLeadVolumeRange: z.string().optional().or(z.literal('')),
   primaryAcquisitionChannel: z.string().optional().or(z.literal('')),
   schedulerUrl: z.string().url().optional().or(z.literal('')),
+  appointmentBookingMethod: z.string().optional().or(z.literal('')),
+  averageClientValueRange: z.string().optional().or(z.literal('')),
+  urgencyReadiness: z.string().optional().or(z.literal('')),
+  preferredPackageInterest: z.string().optional().or(z.literal('')),
 
   primaryGoal: z.string().optional().or(z.literal('')),
   biggestConstraint: z.string().optional().or(z.literal('')),
@@ -57,7 +62,14 @@ export async function POST(req: Request) {
 
     if (data.company) return NextResponse.json({ ok: true }) // bot
 
-    const hasLink = Boolean((data.websiteUrl || '').trim() || (data.instagramUrl || '').trim() || (data.youtubeUrl || '').trim())
+    const hasLink = Boolean(
+      (data.websiteUrl || '').trim() ||
+      (data.instagramUrl || '').trim() ||
+      (data.linkedinUrl || '').trim() ||
+      (data.youtubeUrl || '').trim() ||
+      (data.googleBusinessUrl || '').trim() ||
+      (data.schedulerUrl || '').trim()
+    )
     if (!hasLink) return NextResponse.json({ error: 'At least one link is required' }, { status: 400 })
 
     const auditId = makeAuditId()
@@ -76,6 +88,7 @@ export async function POST(req: Request) {
         instagramUrl: data.instagramUrl || null,
         youtubeUrl: data.youtubeUrl || null,
         linkedinUrl: data.linkedinUrl || null,
+        googleBusinessUrl: data.googleBusinessUrl || null,
 
         decisionMakerStatus: data.decisionMakerStatus,
         decisionMakerName: data.decisionMakerName || null,
@@ -91,6 +104,10 @@ export async function POST(req: Request) {
         monthlyLeadVolumeRange: data.monthlyLeadVolumeRange || null,
         primaryAcquisitionChannel: data.primaryAcquisitionChannel || null,
         schedulerUrl: data.schedulerUrl || null,
+        appointmentBookingMethod: data.appointmentBookingMethod || null,
+        averageClientValueRange: data.averageClientValueRange || null,
+        urgencyReadiness: data.urgencyReadiness || null,
+        preferredPackageInterest: data.preferredPackageInterest || null,
 
         primaryGoal: data.primaryGoal || null,
         biggestConstraint: data.biggestConstraint || null,

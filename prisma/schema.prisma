@@ -123,9 +123,24 @@ enum EntityType {
   PROJECT
   AUDIT_REQUEST
   INTAKE_SUBMISSION
+  BOOKING_REQUEST
   LEAD
   LIBRARY_ITEM
   PURCHASE
+}
+
+enum BookingStatus {
+  NEW
+  CONFIRMED
+  RESCHEDULE_REQUESTED
+  COMPLETED
+  CANCELLED
+}
+
+enum BookingSource {
+  BOOKING_PAGE
+  AUDIT_THANK_YOU
+  ADMIN
 }
 
 model AdminUser {
@@ -138,11 +153,11 @@ model AdminUser {
 }
 
 model AdminSession {
-  id               String    @id @default(uuid())
+  id               String   @id @default(uuid())
   adminUserId      String
-  sessionTokenHash String    @unique
+  sessionTokenHash String   @unique
   expiresAt        DateTime
-  createdAt        DateTime  @default(now())
+  createdAt        DateTime @default(now())
 
   adminUser AdminUser @relation(fields: [adminUserId], references: [id], onDelete: Cascade)
 
@@ -151,20 +166,21 @@ model AdminSession {
 }
 
 model AuditRequest {
-  id                    String      @id @default(uuid())
-  auditId               String      @unique
+  id      String @id @default(uuid())
+  auditId String @unique
 
   // identity
-  fullName              String
-  email                 String
-  whatsapp              String?
-  country               String?
+  fullName String
+  email    String
+  whatsapp String?
+  country  String?
 
-  businessName          String
-  websiteUrl            String?
-  instagramUrl          String?
-  youtubeUrl            String?
-  linkedinUrl           String?
+  businessName      String
+  websiteUrl        String?
+  instagramUrl      String?
+  youtubeUrl        String?
+  linkedinUrl       String?
+  googleBusinessUrl String?
 
   // decision maker
   decisionMakerStatus   DecisionMakerStatus
@@ -174,19 +190,23 @@ model AuditRequest {
   decisionMakerWhatsApp String?
 
   // business context
-  industry              String?
-  offerType             String?
-  offerSummary          String?
+  industry     String?
+  offerType    String?
+  offerSummary String?
 
   // performance/funnel
-  pricePointRange       String?
-  monthlyLeadVolumeRange String?
+  pricePointRange           String?
+  monthlyLeadVolumeRange    String?
   primaryAcquisitionChannel String?
-  schedulerUrl          String?
+  schedulerUrl              String?
+  appointmentBookingMethod  String?
+  averageClientValueRange   String?
+  urgencyReadiness          String?
+  preferredPackageInterest  String?
 
-  primaryGoal           String?
-  biggestConstraint     String?
-  toolsStack            String?
+  primaryGoal       String?
+  biggestConstraint String?
+  toolsStack        String?
 
   status        AuditStatus @default(NEW)
   internalNotes String?
@@ -204,15 +224,83 @@ model AuditRequest {
   @@index([status, createdAt])
 }
 
+model BookingRequest {
+  id        String @id @default(uuid())
+  bookingId String @unique
+
+  fullName String
+  email    String
+  whatsapp String?
+  country  String?
+
+  businessName String
+  industry     String?
+
+  websiteUrl        String?
+  instagramUrl      String?
+  linkedinUrl       String?
+  youtubeUrl        String?
+  googleBusinessUrl String?
+  schedulerUrl      String?
+
+  meetingType     String
+  timezone        String?
+  scheduledStart  DateTime
+  scheduledEnd    DateTime
+  alternativeDate String?
+  alternativeTime String?
+
+  currentLeadSources       String?
+  mainProblem              String?
+  monthlyLeadVolumeRange   String?
+  budgetReadiness          String?
+  preferredPackageInterest String?
+
+  status        BookingStatus @default(NEW)
+  source        BookingSource @default(BOOKING_PAGE)
+  googleCalendarEventId String?
+  googleMeetLink        String?
+  internalNotes String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([scheduledStart])
+  @@index([email])
+}
+
+model BookingAvailabilityRule {
+  id          String   @id @default(uuid())
+  dayOfWeek   Int
+  startTime   String
+  endTime     String
+  slotMinutes Int      @default(30)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([dayOfWeek, isActive])
+}
+
+model BookingSettings {
+  id                 Int      @id @default(1)
+  lookaheadDays      Int      @default(14)
+  minimumNoticeHours Int      @default(4)
+  defaultTimezone    String   @default("Africa/Lagos")
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+}
+
 model IntakeInviteToken {
-  id              String   @id @default(uuid())
-  auditRequestId  String
-  tokenHash       String   @unique
-  expiresAt       DateTime
-  usedAt          DateTime?
-  deliveryEmail   String?
+  id               String    @id @default(uuid())
+  auditRequestId   String
+  tokenHash        String    @unique
+  expiresAt        DateTime
+  usedAt           DateTime?
+  deliveryEmail    String?
   deliveryWhatsApp String?
-  createdAt       DateTime @default(now())
+  createdAt        DateTime  @default(now())
 
   auditRequest AuditRequest @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
 
@@ -252,7 +340,7 @@ model IntakeSubmission {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  auditRequest AuditRequest @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
+  auditRequest AuditRequest     @relation(fields: [auditRequestId], references: [id], onDelete: Cascade)
   files        SubmissionFile[]
   projects     Project[]
 
@@ -261,14 +349,14 @@ model IntakeSubmission {
 }
 
 model SubmissionFile {
-  id                String   @id @default(uuid())
+  id                 String   @id @default(uuid())
   intakeSubmissionId String
-  originalName      String
-  storedPath        String
-  mimeType          String
-  sizeBytes         BigInt
-  checksum          String?
-  createdAt         DateTime @default(now())
+  originalName       String
+  storedPath         String
+  mimeType           String
+  sizeBytes          BigInt
+  checksum           String?
+  createdAt          DateTime @default(now())
 
   intakeSubmission IntakeSubmission @relation(fields: [intakeSubmissionId], references: [id], onDelete: Cascade)
 
@@ -276,36 +364,36 @@ model SubmissionFile {
 }
 
 model Lead {
-  id        String     @id @default(uuid())
+  id String @id @default(uuid())
 
   // identity
-  email     String?
-  whatsapp  String?
-  name      String?
-  company   String?
-  role      String?
+  email    String?
+  whatsapp String?
+  name     String?
+  company  String?
+  role     String?
 
   // profile URLs
   websiteUrl   String?
   instagramUrl String?
   linkedinUrl  String?
 
-  source    LeadSource
-  stage     LeadStage  @default(NEW)
+  source LeadSource
+  stage  LeadStage  @default(NEW)
 
   // CRM cadence
-  nextFollowUpAt DateTime?
+  nextFollowUpAt  DateTime?
   lastContactedAt DateTime?
   lastRepliedAt   DateTime?
 
   // lightweight tags (CSV for MVP)
-  tags      String?
+  tags String?
 
-  createdAt DateTime   @default(now())
+  createdAt DateTime @default(now())
 
   freeDownloads LibraryFreeDownload[]
-  touchpoints  Touchpoint[]
-  notes        LeadNote[]
+  touchpoints   Touchpoint[]
+  notes         LeadNote[]
 
   @@index([email])
   @@index([whatsapp])
@@ -314,30 +402,30 @@ model Lead {
 }
 
 model LibraryItem {
-  id               String           @id @default(uuid())
-  slug             String           @unique
+  id               String            @id @default(uuid())
+  slug             String            @unique
   title            String
   summary          String?
   contentMarkdown  String?
   tier             LibraryAccessTier
-  category         LibraryCategory  @default(OTHER)
+  category         LibraryCategory   @default(OTHER)
   priceNGN         Int?
   priceUSD         Int?
   downloadFilePath String?
-  isPublished      Boolean          @default(false)
-  createdAt        DateTime         @default(now())
-  updatedAt        DateTime         @updatedAt
+  isPublished      Boolean           @default(false)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
 
   freeDownloads LibraryFreeDownload[]
-  purchases      Purchase[]
-  entitlements   Entitlement[]
+  purchases     Purchase[]
+  entitlements  Entitlement[]
 }
 
 model LibraryFreeDownload {
-  id           String   @id @default(uuid())
+  id            String   @id @default(uuid())
   libraryItemId String
-  leadId       String
-  createdAt    DateTime @default(now())
+  leadId        String
+  createdAt     DateTime @default(now())
 
   libraryItem LibraryItem @relation(fields: [libraryItemId], references: [id], onDelete: Cascade)
   lead        Lead        @relation(fields: [leadId], references: [id], onDelete: Cascade)
@@ -347,20 +435,20 @@ model LibraryFreeDownload {
 }
 
 model Purchase {
-  id                   String          @id @default(uuid())
-  provider             PaymentProvider
-  providerReference    String          @unique
+  id                    String          @id @default(uuid())
+  provider              PaymentProvider
+  providerReference     String          @unique
   providerTransactionId String?
-  email                String
-  libraryItemId        String
-  amount               Int
-  currency             Currency
-  status               PaymentStatus
-  rawWebhookEvent      Json?
-  createdAt            DateTime        @default(now())
-  updatedAt            DateTime        @updatedAt
+  email                 String
+  libraryItemId         String
+  amount                Int
+  currency              Currency
+  status                PaymentStatus
+  rawWebhookEvent       Json?
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
 
-  libraryItem LibraryItem @relation(fields: [libraryItemId], references: [id], onDelete: Restrict)
+  libraryItem  LibraryItem   @relation(fields: [libraryItemId], references: [id], onDelete: Restrict)
   entitlements Entitlement[]
 
   @@index([email])
@@ -378,46 +466,46 @@ model Entitlement {
   createdAt     DateTime        @default(now())
 
   libraryItem LibraryItem @relation(fields: [libraryItemId], references: [id], onDelete: Restrict)
-  purchase    Purchase?  @relation(fields: [purchaseId], references: [id], onDelete: SetNull)
+  purchase    Purchase?   @relation(fields: [purchaseId], references: [id], onDelete: SetNull)
 
   @@index([email, libraryItemId])
 }
 
 model Project {
-  id                String        @id @default(uuid())
-  code              String        @unique
-  name              String
-  description       String?
-  status            ProjectStatus @default(NEW)
+  id          String        @id @default(uuid())
+  code        String        @unique
+  name        String
+  description String?
+  status      ProjectStatus @default(NEW)
 
-  auditRequestId    String?
+  auditRequestId     String?
   intakeSubmissionId String?
 
-  createdAt         DateTime      @default(now())
-  updatedAt         DateTime      @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  auditRequest      AuditRequest?     @relation(fields: [auditRequestId], references: [id], onDelete: SetNull)
-  intakeSubmission  IntakeSubmission? @relation(fields: [intakeSubmissionId], references: [id], onDelete: SetNull)
+  auditRequest     AuditRequest?     @relation(fields: [auditRequestId], references: [id], onDelete: SetNull)
+  intakeSubmission IntakeSubmission? @relation(fields: [intakeSubmissionId], references: [id], onDelete: SetNull)
 
-  events            ActivityEvent[]
+  events ActivityEvent[]
 
   @@index([status, createdAt])
 }
 
 model ActivityEvent {
-  id         String    @id @default(uuid())
-  type       String
-  actorType  ActorType
-  actorId    String?
+  id        String    @id @default(uuid())
+  type      String
+  actorType ActorType
+  actorId   String?
 
   entityType EntityType
   entityId   String
 
-  projectId  String?
-  payload    Json?
-  createdAt  DateTime  @default(now())
+  projectId String?
+  payload   Json?
+  createdAt DateTime @default(now())
 
-  project    Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  project Project? @relation(fields: [projectId], references: [id], onDelete: SetNull)
 
   @@index([createdAt])
   @@index([type, createdAt])
@@ -426,31 +514,31 @@ model ActivityEvent {
 }
 
 model ServiceToken {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  tokenHash String   @unique
-  scopes    String
-  isActive  Boolean  @default(true)
+  id         String    @id @default(uuid())
+  name       String    @unique
+  tokenHash  String    @unique
+  scopes     String
+  isActive   Boolean   @default(true)
   lastUsedAt DateTime?
-  createdAt DateTime @default(now())
+  createdAt  DateTime  @default(now())
 }
 
 model Touchpoint {
-  id        String          @id @default(uuid())
-  leadId    String
-  channel   OutreachChannel
-  type      TouchpointType
+  id      String          @id @default(uuid())
+  leadId  String
+  channel OutreachChannel
+  type    TouchpointType
 
   // message content
-  subject   String?
-  body      String?
+  subject String?
+  body    String?
 
-  outcome   TouchpointOutcome?
-  sentAt    DateTime?
+  outcome TouchpointOutcome?
+  sentAt  DateTime?
 
-  createdAt DateTime        @default(now())
+  createdAt DateTime @default(now())
 
-  lead      Lead            @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   @@index([leadId, createdAt])
   @@index([channel, createdAt])
@@ -463,7 +551,7 @@ model LeadNote {
   body      String
   createdAt DateTime @default(now())
 
-  lead      Lead     @relation(fields: [leadId], references: [id], onDelete: Cascade)
+  lead Lead @relation(fields: [leadId], references: [id], onDelete: Cascade)
 
   @@index([leadId, createdAt])
 }
