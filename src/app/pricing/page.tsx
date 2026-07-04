@@ -16,53 +16,66 @@ const packages = [
   {
     name: 'Audit & Quick Fix',
     bestFor: 'Best for diagnosing leaks before committing to a build.',
-    prices: { CAD: 'CAD $300–$750', GBP: '£250–£600', AUD: 'AUD $400–$900' },
-    desc: 'Diagnostic review and practical conversion-leak action plan.',
+    prices: { CAD: 'From CAD $300', GBP: 'From £250', AUD: 'From AUD $400' },
+    desc: 'Diagnostic review and practical conversion-leak action plan. Final scope depends on the depth of review, channels, and systems involved.',
     features: ['Website/landing page review', 'Lead capture review', 'Booking/follow-up review', 'Competitor snapshot', 'Recommended fix plan'],
   },
   {
     name: 'Website Refresh',
     bestFor: 'Best for outdated websites with weak enquiry flow.',
-    prices: { CAD: 'CAD $1,500–$3,500', GBP: '£1,200–£2,800', AUD: 'AUD $1,800–$4,000' },
-    desc: 'A premium business website refresh built around clear CTAs and lead capture.',
+    prices: { CAD: 'From CAD $1,500', GBP: 'From £1,200', AUD: 'From AUD $1,800' },
+    desc: 'A premium business website refresh built around clear CTAs and lead capture. Final scope depends on page count, content, and integrations.',
     features: ['3–5 page business website', 'Mobile-friendly design', 'CTA/contact forms', 'Basic SEO/tracking', 'Lead capture connection'],
   },
   {
     name: 'Growth System',
     bestFor: 'Best for serious appointment-driven growth.',
-    prices: { CAD: 'CAD $3,500–$7,500', GBP: '£2,800–£6,000', AUD: 'AUD $4,000–$8,500' },
-    desc: 'Recommended core system for turning qualified enquiries into booked appointments.',
+    prices: { CAD: 'From CAD $3,500', GBP: 'From £2,800', AUD: 'From AUD $4,000' },
+    desc: 'Recommended core system for turning qualified enquiries into booked appointments. Final scope depends on automation, CRM, booking, and reporting needs.',
     recommended: true,
     features: ['Website refresh inclusions', 'Landing page', 'CRM/pipeline setup', 'Follow-up automation', 'Booking + reminders', 'Reporting dashboard'],
   },
   {
     name: 'Premium Engine',
     bestFor: 'Best for multi-offer, multi-location, or advanced service businesses.',
-    prices: { CAD: 'CAD $8,000–$15,000+', GBP: '£6,500–£12,000+', AUD: 'AUD $9,000–$18,000+' },
-    desc: 'Advanced growth infrastructure for larger campaigns, teams, and service flows.',
+    prices: { CAD: 'From CAD $8,000', GBP: 'From £6,500', AUD: 'From AUD $9,000' },
+    desc: 'Advanced growth infrastructure for larger campaigns, teams, and service flows. Final scope depends on locations, offers, campaign volume, and custom workflows.',
     features: ['Full website', 'Multiple landing pages', 'Multi-channel capture', 'Ad funnel setup', 'Old lead reactivation', '30 days optimization'],
+  },
+  {
+    name: 'AI Chat & Voice Agent Setup',
+    bestFor: 'Best for businesses that want AI to answer enquiries, qualify leads, and reduce missed conversations.',
+    prices: { CAD: 'From CAD $1,500', GBP: 'From £1,200', AUD: 'From AUD $1,800' },
+    desc: 'A custom AI assistant for your website that can chat with visitors, answer common questions, collect lead details, and optionally support voice conversations. Final scope depends on chat-only vs voice, knowledge depth, and integrations.',
+    features: ['Website AI chat widget', 'AI voice assistant option', 'Business FAQ and service knowledge setup', 'Lead qualification questions', 'Booking or enquiry handoff', 'CRM/email notification integration'],
   },
 ]
 
 const monthlyPlans = [
   {
     name: 'Website Care',
-    prices: { CAD: 'CAD $500–$900/month', GBP: '£400–£700/month', AUD: 'AUD $700–$1,100/month' },
-    desc: 'For keeping the website healthy, updated, and conversion-ready after launch.',
+    prices: { CAD: 'From CAD $500/month', GBP: 'From £400/month', AUD: 'From AUD $700/month' },
+    desc: 'For keeping the website healthy, updated, and conversion-ready after launch. Final scope depends on update frequency and support needs.',
     features: ['Website updates', 'Basic uptime checks', 'Minor page/content edits', 'Monthly performance review'],
   },
   {
     name: 'Growth Management',
-    prices: { CAD: 'CAD $1,000–$1,800/month', GBP: '£800–£1,400/month', AUD: 'AUD $1,300–$2,200/month' },
-    desc: 'For businesses actively improving lead capture, booking, follow-up, and reporting.',
+    prices: { CAD: 'From CAD $1,000/month', GBP: 'From £800/month', AUD: 'From AUD $1,300/month' },
+    desc: 'For businesses actively improving lead capture, booking, follow-up, and reporting. Final scope depends on campaign activity and automation complexity.',
     popular: true,
     features: ['Website + landing page edits', 'Automation monitoring', 'CRM/pipeline cleanup', 'Monthly growth report', 'Offer/page improvements'],
   },
   {
     name: 'Premium Growth Partner',
-    prices: { CAD: 'CAD $2,000–$3,500+/month', GBP: '£1,600–£2,800+/month', AUD: 'AUD $2,600–$4,500+/month' },
-    desc: 'For teams that want ongoing strategy, funnel improvements, automation, and priority support.',
+    prices: { CAD: 'From CAD $2,000/month', GBP: 'From £1,600/month', AUD: 'From AUD $2,600/month' },
+    desc: 'For teams that want ongoing strategy, funnel improvements, automation, and priority support. Final scope depends on team needs, reporting depth, and campaign volume.',
     features: ['Priority implementation', 'Advanced reporting', 'New campaign/offer pages', 'Lead reactivation support', 'Strategy calls'],
+  },
+  {
+    name: 'AI Agent Management',
+    prices: { CAD: 'From CAD $500/month', GBP: 'From £400/month', AUD: 'From AUD $700/month' },
+    desc: 'For businesses that want their AI assistant monitored, improved, and kept accurate after launch. Final scope depends on conversation volume, knowledge updates, and reporting needs.',
+    features: ['AI response tuning', 'FAQ and knowledge updates', 'Conversation review', 'Lead-flow improvements', 'Monthly performance summary', 'Support for changing offers/services'],
   },
 ]
 
@@ -123,7 +136,7 @@ export default function PricingPage() {
           <p className="text-xs font-bold uppercase tracking-[0.22em] text-blue-600">Project packages</p>
           <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em]">Build once, then improve continuously.</h2>
         </div>
-        <div className="mx-auto grid max-w-[1480px] gap-5 lg:grid-cols-4">
+        <div className="mx-auto grid max-w-[1480px] gap-5 md:grid-cols-2 xl:grid-cols-5">
           {packages.map((pkg) => (
             <div key={pkg.name} className={`relative flex rounded-2xl border bg-white p-6 shadow-sm ${pkg.recommended ? 'border-blue-600 ring-4 ring-blue-600/10' : 'border-slate-200'}`}>
               {pkg.recommended ? <span className="absolute -top-3 left-6 rounded-full bg-blue-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">Recommended</span> : null}
@@ -149,7 +162,7 @@ export default function PricingPage() {
             <h2 className="mt-4 text-4xl font-semibold tracking-[-0.04em]">For businesses that want ongoing website and growth support.</h2>
             <p className="mt-4 leading-8 text-slate-600">Use this after a build, or as a lower-upfront monthly website path when the scope is a good fit.</p>
           </div>
-          <div className="grid gap-5 lg:grid-cols-3">
+          <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
             {monthlyPlans.map((plan) => (
               <div key={plan.name} className={`relative rounded-[1.5rem] border bg-slate-50 p-7 ${plan.popular ? 'border-blue-600 ring-4 ring-blue-600/10' : 'border-slate-200'}`}>
                 {plan.popular ? <span className="absolute -top-3 left-7 rounded-full bg-blue-600 px-3 py-1 text-xs font-bold uppercase tracking-wider text-white">Popular</span> : null}
